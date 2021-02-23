@@ -3,23 +3,24 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * Participants
+ * Participant
  *
- * @ORM\Table(name="participants", uniqueConstraints={@ORM\UniqueConstraint(name="participants_pseudo_uk", columns={"pseudo"})})
- * @ORM\Entity
+ * @ORM\Table(name="participant", uniqueConstraints={@ORM\UniqueConstraint(name="participant_pseudo_uk", columns={"pseudo"})})
+ * @ORM\Entity(repositoryClass="App\Repository\ParticipantRepository")
  */
-class Participants
+class Participant implements UserInterface
 {
     /**
      * @var int
      *
-     * @ORM\Column(name="no_participant", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $noParticipant;
+    private $id;
 
     /**
      * @var string
@@ -78,15 +79,20 @@ class Participants
     private $actif;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="campus_no_campus", type="integer", nullable=false)
+     * @ORM\ManyToOne(targetEntity=Campus::class, inversedBy="participants")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $campusNoCampus;
+    private $campus;
 
-    public function getNoParticipant(): ?int
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
+
+
+    public function getId(): ?int
     {
-        return $this->noParticipant;
+        return $this->id;
     }
 
     public function getPseudo(): ?string
@@ -185,17 +191,44 @@ class Participants
         return $this;
     }
 
-    public function getCampusNoCampus(): ?int
+    public function getCampus(): ?Campus
     {
-        return $this->campusNoCampus;
+        return $this->campus;
     }
 
-    public function setCampusNoCampus(int $campusNoCampus): self
+    public function setCampus(?Campus $campus): self
     {
-        $this->campusNoCampus = $campusNoCampus;
+        $this->campus = $campus;
 
         return $this;
     }
 
+    public function getRoles()
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = ['ROLE_PARTICIPANT'];
 
+        return array_unique($roles);
+    }
+
+    public function getPassword()
+    {
+        return $this->motDePasse;
+    }
+
+    public function getSalt()
+    {
+        return null;
+    }
+
+    public function getUsername()
+    {
+        return $this->pseudo;
+    }
+
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
+    }
 }
