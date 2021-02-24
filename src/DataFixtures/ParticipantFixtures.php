@@ -3,7 +3,10 @@
 namespace App\DataFixtures;
 
 use App\Entity\Campus;
+use App\Entity\Etat;
 use App\Entity\Participant;
+use App\Entity\Sortie;
+use DateInterval;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
@@ -81,5 +84,97 @@ class ParticipantFixtures extends Fixture
         }
 
         $manager->flush();
+
+        // Création les états réels (non modifiables)
+        for ($i = 0; $i <= 5; $i++){
+            $etat = new Etat();
+            $etat->setId($i);
+            switch ($i){
+                case 0:
+                    $etat->setLibelle('Création');
+                    break;
+                case 1:
+                    $etat->setLibelle('Inscription ouverte');
+                    break;
+                case 2:
+                    $etat->setLibelle('Inscription clôturée');
+                    break;
+                case 3:
+                    $etat->setLibelle('En cours');
+                    break;
+                case 4:
+                    $etat->setLibelle('Passée');
+                    break;
+                case 5:
+                    $etat->setLibelle('Annulée');
+                    break;
+            }
+            $manager->persist($etat);
+        }
+        $manager->flush();
+
+        // Création de Sorties fictives.
+        $faker = Factory::create('fr_FR');
+
+        for ($i = 1; $i <= 50; $i++){
+
+            switch (rand(1, 7)){
+                case 1 :
+                    $nom = 'Restaurant gastronomique';
+                    break;
+                case 2 :
+                    $nom = 'Découverte du vignoble nantais';
+                    break;
+                case 3 :
+                    $nom = 'Parapente';
+                    break;
+                case 4 :
+                    $nom = 'Musée du Louvre';
+                    break;
+                case 5 :
+                    $nom = 'Accrobranche';
+                    break;
+                case 6 :
+                    $nom = 'Surf';
+                    break;
+                case 7 :
+                    $nom = 'VTT en bord de Loire';
+                    break;
+            }
+
+            $sortie = new Sortie();
+            $sortie->setNom($nom);
+            $sortie->setDuree(rand(1, 12) * 15);
+            $sortie->setDescription($faker->text(200));
+
+            $d =  rand(10,20);
+            $h =  rand(9,16);
+            $m =  rand(0,3) * 15;
+            $debut = new DateTime("midnight");
+            $debut->add(new DateInterval('P'.$d.'DT'.$h.'H'.$m.'M'));
+            $sortie->setDateHeureDebut($debut);
+
+            $j = $d - 3;
+            $cloture = new DateTime("midnight");
+            $cloture->add(new DateInterval('P'.$j.'D'));
+            $sortie->setDateCloture($cloture);
+            $manager->persist($sortie);
+
+            $sortie->setDuree(rand(1, 10) * 15);
+
+            $h =  rand(1,5) * 15;
+            $sortie->setNbInscriptionsMax($h);
+
+            $etat = $manager->getRepository('App:Etat')->findOneById(rand(0,5));
+            $sortie->setEtat($etat);
+
+            $sortie->setOrganisateur($participant);
+            $sortie->setCampus($campus[mt_rand(0,3)]);
+
+            $manager->persist($sortie);
+
+        }
+        $manager->flush();
+
     }
 }
