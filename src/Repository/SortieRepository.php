@@ -19,6 +19,22 @@ class SortieRepository extends ServiceEntityRepository
         parent::__construct($registry, Sortie::class);
     }
 
+    public function findByCampusAndDates($campus, $dateDebut, $dateFin)
+    {
+        $qb = $this->createQueryBuilder('s');
+        $qb ->join('s.campus', 'c')
+            ->addSelect('c')
+            ->andWhere('c.id = :campus')
+            ->setParameter('campus', $campus)
+            ->andWhere('s.dateHeureDebut >= :dateDebut')
+            ->setParameter('dateDebut', $dateDebut)
+            ->andWhere('s.dateCloture <= :dateFin')
+            ->setParameter('dateFin', $dateFin)
+            ->addOrderBy('s.dateHeureDebut');
+        $query = $qb->getQuery();
+        return $query->getResult();
+    }
+
     // /**
     //  * @return Product[] Returns an array of Product objects
     //  */
