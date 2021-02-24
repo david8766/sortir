@@ -1,0 +1,30 @@
+body {
+    background-image: url("../images/login.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+}
+
+h1{
+    font-weight: bold !important;
+    color: saddlebrown;
+    text-shadow: 3px 3px white;
+}
+
+label{
+    font-weight: bold;
+    color: saddlebrown;
+    text-shadow: 2px 2px white;
+}
+
+button{
+    font-weight: bold !important;
+    margin: 1rem 1rem 1rem 0;
+}
+
+#login{
+    background-color: seashell ;
+    border: 1px solid;
+    padding: 1rem 2rem 1rem 2rem;
+}

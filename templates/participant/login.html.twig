@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sortir.com | Se connecter{% endblock %}
+
+{% block stylesheets %}
+<link href="{{ asset('css/login.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block main %}
+    <main class="container">
+        <div class="row my-5 justify-content-center">
+            <div class="col-4 m-5" id="login">
+            <h1 class="my-3">Se connecter</h1>
+                {% if error %}
+                    <div class="alert alert-danger my-3" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+                <!-- Login Form -->
+                <form method="post">
+
+                    <label for="username" class="h5">Pseudo</label>
+                    <input type="text" id="username" class="form-control my-3" name="_username" value="{{ last_username }}">
+
+                    <label for="password" class="h5">Mot de passe</label>
+                    <input type="password" id="password" class="form-control my-3" name="_password">
+
+                    <button type="submit" class="btn btn-success">Connexion</button>
+
+                    <input type="checkbox" id="remember" name="remember" value="remember">
+                    <label for="remember" class="h5">Se souvenir de moi</label>
+
+                    <a href="" class="d-block">Mot de passe oublié</a>
+                </form>
+            </div>
+        </div>
+    </main>
+{% endblock %}

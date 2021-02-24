@@ -207,7 +207,7 @@ class Participant implements UserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = ['ROLE_PARTICIPANT'];
+        $roles[] = 'ROLE_PARTICIPANT';
 
         return array_unique($roles);
     }
@@ -230,5 +230,9 @@ class Participant implements UserInterface
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
+    }
+
+    public function __toString() :string {
+        return $this->nom . ' ' . $this->prenom;
     }
 }
