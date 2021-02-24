@@ -12,16 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractController
 {
     /**
-     * @Route("/", name="home")
-     */
-    public function index(): Response
-    {
-
-        return $this->render('home/index.html.twig');
-    }
-
-    /**
-     * @Route("/accueil", name="accueil")
+     * @Route("/", name="accueil")
      */
     public function accueil(): Response
     {
@@ -41,19 +32,13 @@ class HomeController extends AbstractController
 
     function initiales($nom): string
     {
+
         $nom_initiale = ''; // déclare le recipient
         $n_mot = explode(" ",$nom);
         foreach($n_mot as $lettre){
-            $nom_initiale .= $lettre{0}.'.';
+            $nom_initiale .= $lettre[0].'.';
         }
         return strtoupper($nom_initiale);
     }
 
-    /**
-     * @Route("/logout", name="logout")
-     */
-    public function logout (): Response
-    {
-
-    }
 }
