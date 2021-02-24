@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Participant;
 use App\Form\ParticipantType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,13 +15,15 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class ParticipantController extends AbstractController
 {
     /**
-     * @Route("/participant", name="participant")
+     * @Route("/afficherProfil/{id}", name="afficherProfil")
+     * @param $id
+     * @return Response
      */
-    public function index(): Response
+    public function afficherProfil($id): Response
     {
-        return $this->render('participant/index.html.twig', [
-            'controller_name' => 'ParticipantController',
-        ]);
+        $participantRepo = $this->getDoctrine()->getRepository(Participant::class);
+        $participant = $participantRepo->find($id);
+        return $this->render('participant/afficherProfil.html.twig',compact('participant'));
     }
 
     /**

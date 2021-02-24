@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sortir.com | {{ participant.pseudo }}{% endblock %}
+
+{% block main %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-4"></div>
+            <div class="col-4">
+                <div class="row text-center"><h1 class="my-4">{{ participant.pseudo }}</h1></div>
+                <table class="table my-5">
+                    <tbody>
+                    <tr>
+                        <td class="h5">Prénom :</td>
+                        <td class="h5">{{ participant.prenom }}</td>
+                    </tr>
+                    <tr>
+                        <td class="h5">Nom :</td>
+                        <td class="h5">{{ participant.nom }}</td>
+                    </tr>
+                    <tr>
+                        <td class="h5">Téléphone :</td>
+                        <td class="h5">{{ participant.nom }}</td>
+                    </tr>
+                    <tr>
+                        <td class="h5">Email :</td>
+                        <td class="h5">{{ participant.mail }}</td>
+                    </tr>
+                    <tr>
+                        <td class="h5">Campus :</td>
+                        <td class="h5">{{ participant.campus.nom }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <a href="{{ path('accueil') }}" class="btn btn-danger my-3 ml-2">Retour</a>
+            </div>
+            <div class="col-4"></div>
+        </div>
+    </div>
+{% endblock %}
