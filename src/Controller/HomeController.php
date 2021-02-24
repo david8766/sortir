@@ -35,7 +35,7 @@ class HomeController extends AbstractController
             $sortiesPassees = $request->get('sortiesPassees');
 
             //Effectuer les tris en fonction des paramètres de tri
-            //Tri en fonction du campus
+            //Tri en fonction du campus à faire
 
 
 
