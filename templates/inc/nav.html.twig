@@ -1,0 +1,24 @@
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="#">Sortir.com</a>
+    {#  <img src="{{ asset('images/logo.png') }}" alt="Logo du site Sortir.com" class="logo"> #}
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav mr-auto">
+            {% if is_granted('ROLE_ADMIN') %}
+                <li class="nav-item"><a class="nav-link" href="{{ path('#') }}">Villes</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ path('#') }}">Campus</a></li>
+            {% else %}
+                <li class="nav-item"><a class="nav-link" href="{{ path ('accueil') }}">Accueil</a></li>
+                {# <li class="nav-item"><a class="nav-link" href="{{ path ('monProfil') }}">Mon profil</a></li> #}
+                <li class="nav-item"><a class="nav-link" href="{{ path ('logout') }}">Se déconnecter</a></li>
+            {% endif %}
+        </ul>
+
+    </div>
+
+</nav>

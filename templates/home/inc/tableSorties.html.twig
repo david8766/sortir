@@ -1,0 +1,39 @@
+
+
+
+    <div class="tableSorties">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Nom de la sortie</th>
+                    <th>Date de la sortie</th>
+                    <th>Clôture</th>
+                    <th>Inscrits/places</th>
+                    <th>Etat</th>
+                    <th>Inscrit</th>
+                    <th>Organisateur</th>
+                    <th>Actions</th>
+                 </tr>
+            </thead>
+            <tbody>
+
+               {% for sortie in sorties %}
+                <tr>
+                    <td>{{ sortie.nom }}</td>
+                    <td>{{ sortie.datedebut | date('d/m/Y') }} {{ sortie.datedebut | date('H') }} H {{ sortie.datedebut | date('i') }}</td>
+                    <td>{{ sortie.datecloture | date('d/m/Y') }}</td>
+                    <td> ++Fonction pour compter le nombre de participants++ / {{ sortie.nbinscriptionsmax }}</td>
+                    <td>{{ sortie.etatsortie }}</td>
+                    <td> ++Fonction pour savoir si l'User est inscrit ou pas++ </td>
+                    {#  <td>{{ sortie.organisateur.prenom }} {{ initiales }}</td> #}
+                    <td> Nom de l'organisateur</td>
+                    <td>Affiche des liens en fonction de l'état de la sortie vis à vis des organisateurs</td>
+                </tr>
+               {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
+
+

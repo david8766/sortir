@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sortir.com | Accueil{% endblock %}
+
+{% block main %}
+
+    <div class="infos">
+        <p>Date du jour : {{ "now" | date("d/m/Y") }}</p>
+        {#  <p>Participant : {{ app.user.prenom }} {{ initiales }}</p> #}
+    </div>
+
+    {% include 'home/inc/formFiltre.html.twig' %}
+
+    {% include 'home/inc/tableSorties.html.twig' %}
+
+{#
+    <button><a href="{{ path('sortie/add') }}">Créer une sortie</a></button>
+#}
+
+
+
+{% endblock %}

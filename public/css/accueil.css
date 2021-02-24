@@ -1,0 +1,70 @@
+html, body{
+    font-family: 'Neucha', cursive;
+
+}
+footer{
+    text-align: center;
+}
+.navbar-nav{
+    font-size: large;
+    float: right;
+    padding: 5px;
+}
+.navbar-brand{
+    font-size: x-large;
+}
+
+.menu {
+    display: inline;
+    margin-left: 20px;
+    margin-right: 20px;
+    text-align: center;
+}
+
+.logo{
+    display: inline;
+}
+
+nav{
+    display: inline-block;
+    margin-left: 50px;
+    margin-right: 50px;
+    text-align: right;
+}
+.mesSorties{
+    display: inline-block;
+}
+.dates{
+    display: inline-block;
+    float: right;
+}
+
+.col1, .col2, .col3{
+    display: inline-block;
+    margin-right: 40px;
+    text-align: left;
+}
+
+.dates{
+    display: inline-block;
+}
+label{
+    display: inline;
+}
+input{
+    display: inline;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 20px;
+}
+
+.infos{
+    margin-right: 50px;
+    text-align: right;
+}
+.fa-calendar, .fa-search{
+    margin-right: 10px;
+}
+label{
+    font-size: large;
+}
