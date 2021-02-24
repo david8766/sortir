@@ -7,9 +7,9 @@
                         <div class="campus">
                             <label for="campus">Campus : </label>
                             <select name="campus" id="campus" class="form-select">
-                                <option selected>Choisir son campus</option>
+                                <option value="">-- Choisir son campus --</option>
 
-                                {% for c in campus %}
+                                {% for c in campusList %}
                                     <option value="{{ c.id }}">{{ c.nom }}</option>
                                 {% endfor %}
 
@@ -28,13 +28,13 @@
 
                         <div class="dates form-group">
 
-                            <div class="input-group  align-items-center">
-                                Entre le <input type="date" class="form-control" id="dateDebut" name="dateFin">
+                            <div class="input-group align-items-center">
+                                Entre le <input type="date" class="form-control" id="dateDebut" name="dateDebut" required>
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar">
                                     </i>
                                 </div>
-                                et le <input type="date" class="form-control ml-2" id="dateFin" name="dateFin">
+                                et le <input type="date" class="form-control ml-2" id="dateFin" name="dateFin" required>
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar">
                                     </i>
@@ -45,16 +45,16 @@
 
 
                     <div class="col2 form-check " id="mesSorties">
-                        <input type="checkbox" class="form-check-input" id="mesSortiesOrganisees" name="mesSortiesOrganisees">
+                        <input type="checkbox" class="form-check-input" id="mesSortiesOrganisees" name="mesSortiesOrganisees" value="checked">
                         <label for="mesSortiesOrganisees" class="form-check-label">Sorties dont je suis l'organisateur/trice</label><br>
 
-                        <input type="checkbox" class="form-check-input" id="mesInscriptions" name="mesInscriptions">
+                        <input type="checkbox" class="form-check-input" id="mesInscriptions" name="mesInscriptions" value="checked">
                         <label for="mesInscriptions" class="form-check-label">Sorties auxquelles je suis inscrit/e</label><br>
 
-                        <input type="checkbox" class="form-check-input" id="sortiesNonInscrit" name="sortiesNonInscrit">
+                        <input type="checkbox" class="form-check-input" id="sortiesNonInscrit" name="sortiesNonInscrit" value="checked">
                         <label for="sortiesNonInscrit" class="form-check-label">Sorties auxquelles je ne suis pas inscrit/e</label><br>
 
-                        <input type="checkbox" class="form-check-input" id="sortiesPassees" name="sortiesPassees">
+                        <input type="checkbox" class="form-check-input" id="sortiesPassees" name="sortiesPassees" value="checked">
                         <label for="sortiesPassees" class="form-check-label">Sorties passées</label><br><br>
 
                         <button class="btn btn-primary" type="submit">Rechercher</button>

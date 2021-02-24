@@ -5,6 +5,7 @@ html, body{
 footer{
     text-align: center;
 }
+
 .navbar-nav{
     font-size: large;
     float: right;
@@ -25,12 +26,7 @@ footer{
     display: inline;
 }
 
-nav{
-    display: inline-block;
-    margin-left: 50px;
-    margin-right: 50px;
-    text-align: right;
-}
+
 .mesSorties{
     display: inline-block;
 }
