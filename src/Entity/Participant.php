@@ -232,7 +232,7 @@ class Participant implements UserInterface
         // TODO: Implement eraseCredentials() method.
     }
 
-    public function __toString() :string {
-        return $this->nom . ' ' . $this->prenom;
+    public function getNomPrenom() :string {
+        return strtoupper($this->nom) . ' ' . $this->prenom;
     }
 }
