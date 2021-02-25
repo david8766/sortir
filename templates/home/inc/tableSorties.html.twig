@@ -24,8 +24,11 @@
                     <td>{{ sortie.dateCloture | date('d/m/Y') }}</td>
                     <td> ++nombre de participants++ / {{ sortie.nbInscriptionsMax }}</td>
                     <td>{{ sortie.etat.libelle }}</td>
-                    <td> ++User inscrit ou pas++ </td>
-                    <td><a href="{{ path('afficherProfil', {'id':  sortie.organisateur.id}) }}">{{ sortie.organisateur.prenom }} {{ initiales }}</a></td>
+                    <td> {# {% if app.user != sortie.inscriptions.perticipant %} non inscrit
+                         {% else %} inscrit
+                         {% endif %} #} -- Inscrit ou pas ? --
+                    </td>
+                    <td><a href="{{ path('afficherProfil', {'id':  sortie.organisateur.id}) }}">{{ sortie.organisateur.prenom }} {{ initiales(sortie.organisateur.nom) }}</a></td>
                     <td>++ Liens en fonction de l'état et des organisateurs++ </td>
                 </tr>
                {% endfor %}

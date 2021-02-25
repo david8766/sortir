@@ -7,11 +7,13 @@
                         <div class="campus">
                             <label for="campus">Campus : </label>
                             <select name="campus" id="campus" class="form-select">
-                                <option value="">-- Choisir son campus --</option>
-
+                                <option value="">-- Tous les campus --</option>
                                 {% for c in campusList %}
                                     <option value="{{ c.id }}">{{ c.nom }}</option>
                                 {% endfor %}
+                                {% if campusActif != null %}
+                                    <option selected value="{{ campusActif.id }}">{{ campusActif.nom }}</option>
+                                {% endif %}
 
                             </select>
                         </div><br>
@@ -22,19 +24,19 @@
                                 <div class="input-group-addon">
                                     <i class="fa fa-search"> </i>
                                 </div>
-                                <input type="search" class="form-control" name="rechercheParNom" id="rechercheParNom" placeholder="search">
+                                <input type="search" class="form-control" name="rechercheParNom" id="rechercheParNom" placeholder="search" value="{{ recherche }}">
                             </div>
                         </div><br>
 
                         <div class="dates form-group">
 
                             <div class="input-group align-items-center">
-                                Entre le <input type="date" class="form-control" id="dateDebut" name="dateDebut">
+                                Entre le <input type="date" class="form-control" id="dateDebut" name="dateDebut" value="{{ dateDebut }}">
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar">
                                     </i>
                                 </div>
-                                et le <input type="date" class="form-control ml-2" id="dateFin" name="dateFin">
+                                et le <input type="date" class="form-control ml-2" id="dateFin" name="dateFin" value="{{ dateFin }}">
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar">
                                     </i>
