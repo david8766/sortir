@@ -3,9 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Campus;
-use App\Entity\Participants;
+use App\Entity\Participant;
 use App\Entity\Sortie;
-use App\Entity\Sorties;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,7 +34,8 @@ class HomeController extends AbstractController
             $sortiesPassees = $request->get('sortiesPassees');
 
             //Effectuer les tris en fonction des paramètres de tri
-            //Tri en fonction du campus à faire
+            //Tri en fonction du campus et des dates
+            $sorties = $sortiesRepo->findByCampusAndDates($campus, $dateDebut, $dateFin);
 
 
 
