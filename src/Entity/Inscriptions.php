@@ -7,28 +7,20 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Inscriptions
  *
- * @ORM\Table(name="inscriptions", indexes={@ORM\Index(name="inscriptions_participants_fk", columns={"participants_no_participant"})})
- * @ORM\Entity
+ * @ORM\Table(name="inscriptions")
+ * @ORM\Entity(repositoryClass="App\Repository\InscriptionsRepository")
+ *
  */
 class Inscriptions
 {
     /**
      * @var int
      *
-     * @ORM\Column(name="sorties_no_sortie", type="integer", nullable=false)
+     * @ORM\Column(name="id_inscription", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $sortiesNoSortie;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="participants_no_participant", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
-     */
-    private $participantsNoParticipant;
+    private $idInscription;
 
     /**
      * @var \DateTime
@@ -37,27 +29,82 @@ class Inscriptions
      */
     private $dateInscription;
 
-    public function getSortiesNoSortie(): ?int
+    /**
+     * @ORM\ManyToOne (targetEntity="App\Entity\Sortie")
+     *
+     */
+    private $sortie;
+
+    /**
+     * @ORM\ManyToOne (targetEntity="App\Entity\Participant")
+     */
+    private $participant;
+
+    /**
+     * @return int
+     */
+    public function getIdInscription(): int
     {
-        return $this->sortiesNoSortie;
+        return $this->idInscription;
     }
 
-    public function getParticipantsNoParticipant(): ?int
+    /**
+     * @param int $idInscription
+     */
+    public function setIdInscription(int $idInscription): void
     {
-        return $this->participantsNoParticipant;
+        $this->idInscription = $idInscription;
     }
 
-    public function getDateInscription(): ?\DateTimeInterface
+    /**
+     * @return \DateTime
+     */
+    public function getDateInscription(): \DateTime
     {
         return $this->dateInscription;
     }
 
-    public function setDateInscription(\DateTimeInterface $dateInscription): self
+    /**
+     * @param \DateTime $dateInscription
+     */
+    public function setDateInscription(\DateTime $dateInscription): void
     {
         $this->dateInscription = $dateInscription;
-
-        return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getSortie()
+    {
+        return $this->sortie;
+    }
+
+    /**
+     * @param mixed $sortie
+     */
+    public function setSortie($sortie): void
+    {
+        $this->sortie = $sortie;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getParticipant()
+    {
+        return $this->participant;
+    }
+
+    /**
+     * @param mixed $participant
+     */
+    public function setParticipant($participant): void
+    {
+        $this->participant = $participant;
+    }
+
+
 
 
 }

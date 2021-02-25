@@ -64,3 +64,18 @@ input{
 label{
     font-size: large;
 }
+.flash{
+    padding: 20px;
+    display: block;
+    font-size: 24px;
+    font-weight: bold;
+    color: #C9C9C9;
+}
+.flash-success{
+    background-color: darkgreen;
+
+}
+.flash-error, .flash-noResults{
+    background-color: #AA3333;
+}
+
