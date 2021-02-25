@@ -29,12 +29,12 @@
                         <div class="dates form-group">
 
                             <div class="input-group align-items-center">
-                                Entre le <input type="date" class="form-control" id="dateDebut" name="dateDebut" required>
+                                Entre le <input type="date" class="form-control" id="dateDebut" name="dateDebut">
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar">
                                     </i>
                                 </div>
-                                et le <input type="date" class="form-control ml-2" id="dateFin" name="dateFin" required>
+                                et le <input type="date" class="form-control ml-2" id="dateFin" name="dateFin">
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar">
                                     </i>
@@ -45,7 +45,7 @@
 
 
                     <div class="col2 form-check " id="mesSorties">
-                        <input type="checkbox" class="form-check-input" id="mesSortiesOrganisees" name="mesSortiesOrganisees" value="checked">
+                        <input type="checkbox" class="form-check-input" id="mesSortiesOrganisees" name="mesSortiesOrganisees" value="{{ app.User.id }}">
                         <label for="mesSortiesOrganisees" class="form-check-label">Sorties dont je suis l'organisateur/trice</label><br>
 
                         <input type="checkbox" class="form-check-input" id="mesInscriptions" name="mesInscriptions" value="checked">

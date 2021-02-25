@@ -19,48 +19,37 @@ class SortieRepository extends ServiceEntityRepository
         parent::__construct($registry, Sortie::class);
     }
 
-    public function findByCampusAndDates($campus, $dateDebut, $dateFin)
+    public function findByAllFilters($campus, $recherche, $dateDebut, $dateFin, $organisateur)
     {
+
         $qb = $this->createQueryBuilder('s');
         $qb ->join('s.campus', 'c')
             ->addSelect('c')
-            ->andWhere('c.id = :campus')
-            ->setParameter('campus', $campus)
-            ->andWhere('s.dateHeureDebut >= :dateDebut')
-            ->setParameter('dateDebut', $dateDebut)
-            ->andWhere('s.dateCloture <= :dateFin')
-            ->setParameter('dateFin', $dateFin)
-            ->addOrderBy('s.dateHeureDebut');
+            ->join('s.organisateur', 'p')
+            ->addSelect('p');
+        if($campus != null){
+            $qb ->andWhere('c.id = :campus')
+                ->setParameter('campus', $campus);
+        }
+        if($recherche != null){
+            $qb ->andWhere('s.nom LIKE :recherche')
+                ->setParameter('recherche', '%'.$recherche.'%');
+        }
+        if($dateDebut != null){
+            $qb ->andWhere('s.dateHeureDebut >= :dateDebut')
+                ->setParameter('dateDebut', $dateDebut);
+        }
+        if($dateFin != null){
+            $qb ->andWhere('s.dateCloture <= :dateFin')
+                ->setParameter('dateFin', $dateFin);
+        }
+        if($organisateur != null){
+            $qb ->andWhere('p.id = :organisateur')
+                ->setParameter('organisateur', $organisateur);
+        }
+            $qb->addOrderBy('s.dateHeureDebut');
         $query = $qb->getQuery();
         return $query->getResult();
     }
 
-    // /**
-    //  * @return Product[] Returns an array of Product objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Product
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

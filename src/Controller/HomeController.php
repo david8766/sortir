@@ -28,14 +28,18 @@ class HomeController extends AbstractController
             $campus = $request->get('campus');
             $dateDebut = $request->get('dateDebut');
             $dateFin = $request->get('dateFin');
-            $mesSortiesOrganisees = $request->get('mesSortiesOrganisees');
+            $recherche = $request->get('rechercheParNom');
+            $organisateur = $request->get('mesSortiesOrganisees');
             $mesInscriptions = $request->get('mesInscriptions');
             $sortiesNonInscrit = $request->get('sortiesNonInscrit');
             $sortiesPassees = $request->get('sortiesPassees');
 
             //Effectuer les tris en fonction des paramètres de tri
-            //Tri en fonction du campus et des dates
-            $sorties = $sortiesRepo->findByCampusAndDates($campus, $dateDebut, $dateFin);
+            //Tri en fonction du campus et des dates (et d'un mot clé)
+            $sorties = $sortiesRepo->findByAllFilters($campus, $recherche, $dateDebut, $dateFin, $organisateur);
+            if ($sorties == null){
+                $this->addFlash('noResults', 'Aucune sortie ne correspond à vos critères');
+            }
 
 
 
@@ -45,6 +49,10 @@ class HomeController extends AbstractController
             "initiales"=>$initiales,
             "campusList"=>$campusList,
             "sorties"=>$sorties,
+            "campus"=>$campus,
+            "dateDebut"=>$dateDebut,
+            "dateFin"=>$dateFin,
+            "rcherche"=>$recherche,
         ]);
     }
 

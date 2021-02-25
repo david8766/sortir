@@ -25,7 +25,7 @@
                     <td> ++nombre de participants++ / {{ sortie.nbInscriptionsMax }}</td>
                     <td>{{ sortie.etat.libelle }}</td>
                     <td> ++User inscrit ou pas++ </td>
-                    <td><a href="{{ path('afficherProfil', {'id':  sortie.organisateur.id}) }}">X{{ sortie.organisateur.prenom }} {{ initiales }}</a></td>
+                    <td><a href="{{ path('afficherProfil', {'id':  sortie.organisateur.id}) }}">{{ sortie.organisateur.prenom }} {{ initiales }}</a></td>
                     <td>++ Liens en fonction de l'état et des organisateurs++ </td>
                 </tr>
                {% endfor %}
