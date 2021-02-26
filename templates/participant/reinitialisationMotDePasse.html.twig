@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sortir.com | Réinitialisation du mot de passe{% endblock %}
+
+{% block main %}
+    <div class="container">
+        <div class="row">
+            <h1 class="my-5">Réinitialisation du mot de passe</h1>
+            {{ form_start(passwordForm) }}
+            {{ form_widget(passwordForm) }}
+            <input type="hidden" name="token" value="{{ token }}">
+            <button type="submit" class="btn btn-success my-3">Valider</button>
+            {{ form_end(passwordForm) }}
+        </div>
+    </div>
+{% endblock %}
