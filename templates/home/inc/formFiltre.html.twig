@@ -52,7 +52,7 @@
                                 {% if organisateur != null %} checked {% endif %}>
                         <label for="mesSortiesOrganisees" class="form-check-label">Sorties dont je suis l'organisateur/trice</label><br>
 
-                        <input type="checkbox" class="form-check-input" id="mesInscriptions" name="mesInscriptions" value="checked">
+                        <input type="checkbox" class="form-check-input" id="mesInscriptions" name="mesInscriptions" value="{{ app.User.id }}">
                         <label for="mesInscriptions" class="form-check-label">Sorties auxquelles je suis inscrit/e</label><br>
 
                         <input type="checkbox" class="form-check-input" id="sortiesNonInscrit" name="sortiesNonInscrit" value="checked">

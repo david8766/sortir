@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -17,14 +18,13 @@ class Inscriptions
      * @var int
      *
      * @ORM\Column(name="id_inscription", type="integer", nullable=false)
-     *
+     * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $idInscription;
 
     /**
-     * @var \DateTime
-     * @ORM\Id
+     * @var DateTime
      * @ORM\Column(name="date_inscription", type="datetime", nullable=false)
      */
     private $dateInscription;
@@ -82,17 +82,17 @@ class Inscriptions
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getDateInscription(): \DateTime
+    public function getDateInscription(): DateTime
     {
         return $this->dateInscription;
     }
 
     /**
-     * @param \DateTime $dateInscription
+     * @param DateTime $dateInscription
      */
-    public function setDateInscription(\DateTime $dateInscription): void
+    public function setDateInscription(DateTime $dateInscription): void
     {
         $this->dateInscription = $dateInscription;
     }

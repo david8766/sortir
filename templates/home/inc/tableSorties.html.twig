@@ -24,23 +24,19 @@
                     <td>{{ sortie.dateCloture | date('d/m/Y') }}</td>
                     <td> ++nombre de participants++ / {{ sortie.nbInscriptionsMax }}</td>
                     <td>{{ sortie.etat.libelle }}</td>
-                    <td> {# {% if app.user != sortie.inscriptions.perticipant %} non inscrit
-                         {% else %} inscrit
-                         {% endif %} #} -- Inscrit ou pas ? --
-                    </td>
+                    <td>{{ isInscrit(mesSortiesCommeInscrit, sortie) }}</td>
                     <td><a href="{{ path('afficherProfil', {'id':  sortie.organisateur.id}) }}">{{ sortie.organisateur.prenom }} {{ initiales(sortie.organisateur.nom) }}</a></td>
                     <td>
                         <a href="{{ path('sortie_edit', {'noSortie': sortie.noSortie}) }}">Afficher</a>
-                        {# {% if app.user != sortie.inscriptions.perticipant %}
-                             <a href="{{ path('inscription')}}"> - S'inscrire</a>
-                        {% else %}
-                            {% if app.user != sortie.organisatur %}
-                            <a href="{{ path('seDesister') }}"> - Se désister</a>
-                            {% else %}
-                            <a href="{{ path('sortie_delete' }}"> - Annuler la sortie</a>
-                            {% endif %}
-                        {% endif %} #}
-
+                        {% if action(mesSortiesCommeInscrit, sortie, app.user)  == 1 %}
+                        <a href="{{ path('inscription', {'noSortie' : sortie.noSortie}) }}"> - S'inscrire</a>
+                        {% endif %}
+                        {% if action(mesSortiesCommeInscrit, sortie, app.user) == 2 %}
+                        <a href="{{ path('seDesister',{'idInscription': mesInscription.idInscription}) }}"> - Se désister</a>
+                        {% endif %}
+                        {% if action(mesSortiesCommeInscrit, sortie, app.user) == 3 %}
+                        <a href="{{ path('sortie_delete') }}"> - Annuler la sortie</a>
+                        {% endif %}
                     </td>
                 </tr>
                {% endfor %}

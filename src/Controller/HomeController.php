@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Campus;
+use App\Entity\Inscriptions;
 use App\Entity\Sortie;
+use phpDocumentor\Reflection\Types\This;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,6 +26,7 @@ class HomeController extends AbstractController
      */
     public function accueil(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_PARTICIPANT');
         //Récupération de la session pour garder les données de formulaires
         $request->getSession();
         $campusActif = $this->session->get('campusActif', null);
@@ -33,17 +36,21 @@ class HomeController extends AbstractController
         $sorties = $this->session->get('sorties', null);
         $organisateur = $this->session->get('organisateur', null);
         $etatSortiesPassees = $this->session->get('etatSortiesPassees', null);
+        $mesInscriptions = $this->session->get('mesInscriptions', null);
+        $sortiesNonInscrit = $this->session->get('sortiesNonInscrit', null);
+        $mesSortiesCommeInscrit = $this->session->get('mesSortiesCommeInscrit', null);
+
+
 
         //Mise à jour de l'état des sorties et appel aux repositories
         $this->actualiserEtats();
         $campusList = $this->getDoctrine()->getRepository(Campus::class)->findAll();
         $sortiesRepo = $this->getDoctrine()->getRepository(Sortie::class);
+        $inscriptionsRepo = $this->getDoctrine()->getRepository(Inscriptions::class);
 
         if($sorties == null){
             $sorties = $sortiesRepo->findAll();
         }
-        //$insciptionRepo = $this->getDoctrine()->getRepository(Inscriptions::class);
-        //$mesInscriptionsAuxSorties = $insciptionRepo->findBy(['participant' => $user]);
 
         //récupérer les données du formulaire de tri s'il est envoyé
         if($request->getMethod() ==='POST'){
@@ -71,7 +78,11 @@ class HomeController extends AbstractController
 
             //Recherche en fonction des inscriptions
             $mesInscriptions = $request->get('mesInscriptions');
+            $mesSortiesCommeInscrit = $inscriptionsRepo->findBy(['participant' => $this->getUser()]);
+            $this->session->set('mesSortiesCommeInscrit', $mesSortiesCommeInscrit);
+
             $sortiesNonInscrit = $request->get('sortiesNonInscrit');
+            $this->session->set('sortiesNonInscrit', $sortiesNonInscrit);
 
 
             //Effectuer les tris en fonction des paramètres de tri
@@ -91,6 +102,9 @@ class HomeController extends AbstractController
             "recherche"=>$recherche,
             "organisateur"=>$organisateur,
             "etatSortiesPassees"=>$etatSortiesPassees,
+            "mesInscriptions"=>$mesInscriptions,
+            "sortiesNonInscrit"=>$sortiesNonInscrit,
+            "mesSortiesCommeInscrit"=>$mesSortiesCommeInscrit,
         ]);
     }
 

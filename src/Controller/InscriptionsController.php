@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Inscriptions;
-use App\Form\Inscriptions2Type;
+use App\Entity\Sortie;
+use DateTime;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,84 +16,45 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class InscriptionsController extends AbstractController
 {
-    /**
-     * @Route("/", name="inscriptions_index", methods={"GET"})
-     */
-    public function index(): Response
-    {
-        $inscriptions = $this->getDoctrine()
-            ->getRepository(Inscriptions::class)
-            ->findAll();
-
-        return $this->render('inscriptions/index.html.twig', [
-            'inscriptions' => $inscriptions,
-        ]);
-    }
 
     /**
-     * @Route("/new", name="inscriptions_new", methods={"GET","POST"})
+     * @Route("/sinscrire{noSortie}", name="inscription")
      */
-    public function new(Request $request): Response
+    public function sInscrire(Request $request): Response
     {
         $inscription = new Inscriptions();
-        $form = $this->createForm(Inscriptions2Type::class, $inscription);
-        $form->handleRequest($request);
+        $noSortie = $request->get('noSortie', null);
+        $sortie = $this->getDoctrine()->getRepository(Sortie::class)->find($noSortie);
+        $inscription->setDateInscription(new DateTime());
+        $inscription->setParticipant($this->getUser());
+        $inscription->setSortie($sortie);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($inscription);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('inscriptions_index');
+        $em = $this->getDoctrine()->getManager();
+        try {
+            $em->persist($inscription);
+            $em->flush();
+            $this->addFlash('success','Votre inscription a bien été prise en compte');
+        }catch(Exception $e){
+            $this->addFlash('error','Votre inscription a échoué');
         }
-
-        return $this->render('inscriptions/new.html.twig', [
-            'inscription' => $inscription,
-            'form' => $form->createView(),
-        ]);
+        return $this->redirectToRoute('accueil');
     }
 
     /**
-     * @Route("/{dateInscription}", name="inscriptions_show", methods={"GET"})
+     * @Route("/{idInscription}", name="seDesister")
      */
-    public function show(Inscriptions $inscription): Response
+    public function seDesister(Request $request): Response
     {
-        return $this->render('inscriptions/show.html.twig', [
-            'inscription' => $inscription,
-        ]);
-    }
-
-    /**
-     * @Route("/{dateInscription}/edit", name="inscriptions_edit", methods={"GET","POST"})
-     */
-    public function edit(Request $request, Inscriptions $inscription): Response
-    {
-        $form = $this->createForm(Inscriptions2Type::class, $inscription);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('inscriptions_index');
-        }
-
-        return $this->render('inscriptions/edit.html.twig', [
-            'inscription' => $inscription,
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/{dateInscription}", name="inscriptions_delete", methods={"DELETE"})
-     */
-    public function delete(Request $request, Inscriptions $inscription): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$inscription->getDateInscription(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
+        $id = $request->get('idInscription',null);
+        $inscription = $this->getDoctrine()->getRepository(Inscriptions::class)->find($id);
+        $entityManager = $this->getDoctrine()->getManager();
+        try {
             $entityManager->remove($inscription);
             $entityManager->flush();
+            $this->addFlash('success','Votre désistement a bien été pris en compte !');
+        }catch(Exception $e){
+            $this->addFlash('error', 'Votre désistement a échoué !');
         }
-
-        return $this->redirectToRoute('inscriptions_index');
+        return $this->redirectToRoute('accueil');
     }
 }
