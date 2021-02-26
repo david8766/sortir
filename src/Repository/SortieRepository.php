@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Sortie;
+use DateInterval;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -52,4 +53,52 @@ class SortieRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    public function updateEtats(){
+
+        // inscriptions closes
+        $now = new \DateTime();
+
+        $em = $this->getEntityManager();
+        $dql = "UPDATE App\Entity\Sortie s 
+                SET s.etat=2 
+                WHERE s.etat=1 and s.dateCloture<:now";
+        $em->createQuery($dql)
+            ->setParameter('now', $now)
+            ->execute();
+
+        // sorties en cours
+        $em = $this->getEntityManager();
+        $dql = "UPDATE App\Entity\Sortie s 
+                SET s.etat=3 
+                WHERE s.etat>0 and s.etat<3 and s.dateHeureDebut<:now";
+        $em->createQuery($dql)
+            ->setParameter('now', $now)
+            ->execute();
+
+        // sorties passées
+        $now = new \DateTime();
+
+        $em = $this->getEntityManager();
+        $dql = "UPDATE App\Entity\Sortie s 
+                SET s.etat=4 
+                WHERE s.etat>0 and s.etat<4 and DATE_ADD(s.dateHeureDebut, s.duree, 'minute')<:now";
+        $em->createQuery($dql)
+            ->setParameter('now', $now)
+            ->execute();
+
+        // sorties archivées apres 60 jours
+        $di = new DateInterval('P6D');
+        $di->invert=1;
+        $dateArchive = new \DateTime('midnight');
+        $dateArchive->add($di);
+
+        $em = $this->getEntityManager();
+        $dql = "UPDATE App\Entity\Sortie s 
+                SET s.etat=6 
+                WHERE s.etat<>5 and s.dateHeureDebut<:dateArchive";
+        $em->createQuery($dql)
+                    ->setParameter('dateArchive', $dateArchive)
+                    ->execute();
+
+    }
 }

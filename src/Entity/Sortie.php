@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateInterval;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -32,6 +33,7 @@ class Sortie
     private $dateHeureDebut;
 
     /**
+     * @Assert\Positive(message="La valeur doit être supérieure à zéro")
      * @ORM\Column(name="duree", type="integer", nullable=true)
      */
     private $duree;
@@ -42,6 +44,7 @@ class Sortie
     private $dateCloture;
 
     /**
+     * @Assert\Positive(message="La valeur doit être supérieure à zéro")
      * @ORM\Column(name="nb_inscriptions_max", type="integer", nullable=false)
      */
     private $nbInscriptionsMax;
@@ -228,6 +231,8 @@ class Sortie
         $this->campus = $campus;
     }
 
+
+
     /**
      * @Assert\Callback
      */
@@ -245,7 +250,7 @@ class Sortie
         // Vérifie que la date de cloture des inscriptions est inférieure à la date de la sortie
         // et supérieure à aujourd'hui
         $now = new \DateTime();
-        if ($this->getDateCloture() < $this->getDateHeureDebut()
+        if ($this->getDateCloture() > $this->getDateHeureDebut()
             || $this->getDateCloture()>$now){
             $context->buildViolation("La date est incorrecte.")
                 ->atPath('dateCloture')

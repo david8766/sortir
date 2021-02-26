@@ -87,7 +87,7 @@ class ParticipantFixtures extends Fixture
         $manager->flush();
 
         // Création les états réels (non modifiables)
-        for ($i = 0; $i <= 5; $i++){
+        for ($i = 0; $i <= 6; $i++){
             $etat = new Etat();
             $etat->setId($i);
             switch ($i){
@@ -108,6 +108,9 @@ class ParticipantFixtures extends Fixture
                     break;
                 case 5:
                     $etat->setLibelle('Annulée');
+                    break;
+                case 6:
+                    $etat->setLibelle('Archivée');
                     break;
             }
             $manager->persist($etat);
@@ -145,20 +148,33 @@ class ParticipantFixtures extends Fixture
 
             $sortie = new Sortie();
             $sortie->setNom($nom);
-            $sortie->setDuree(rand(1, 12) * 15);
+            $sortie->setDuree(rand(1, 20) * 30);
             $sortie->setDescription($faker->text(200));
 
-            $d =  rand(10,20);
+            $debut = new DateTime();
+
+            if(rand(0,3)<2){
+                $d =  rand(0,30);
+                $di = new DateInterval('P'.$d.'D');
+                $di->invert=1;
+            }else{
+                $d =  rand(0,30);
+                $di = new DateInterval('P'.$d.'D');
+            }
+            $debut->add($di);
+
             $h =  rand(9,16);
             $m =  rand(0,3) * 15;
-            $debut = new DateTime("midnight");
-            $debut->add(new DateInterval('P'.$d.'DT'.$h.'H'.$m.'M'));
+            $debut->setTime($h,$m,0);
             $sortie->setDateHeureDebut($debut);
 
-            $j = $d - 3;
-            $cloture = new DateTime("midnight");
-            $cloture->add(new DateInterval('P'.$j.'D'));
+            $cloture = $debut;
+            $cloture->setTime(0,0,0);
+            $di = new DateInterval('P3D');
+            $di->invert=1;
+            $cloture->add($di);
             $sortie->setDateCloture($cloture);
+
             $manager->persist($sortie);
 
             $sortie->setDuree(rand(1, 10) * 15);
@@ -166,7 +182,7 @@ class ParticipantFixtures extends Fixture
             $h =  rand(1,5) * 15;
             $sortie->setNbInscriptionsMax($h);
 
-            $etat = $manager->getRepository('App:Etat')->findOneById(rand(0,5));
+            $etat = $manager->getRepository('App:Etat')->findOneById(rand(0,1));
             $sortie->setEtat($etat);
 
             $sortie->setOrganisateur($participant);

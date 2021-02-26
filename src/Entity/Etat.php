@@ -25,6 +25,16 @@ class Etat
     private $libelle;
 
     /**
+     * Etat constructor.
+     * @param $id
+     */
+    public function __construct(int $id= 0)
+    {
+        $this->id = $id;
+        $this->libelle = '';
+    }
+
+    /**
      * @return mixed
      */
     public function getId()
