@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des sorties{% endblock %}
+
+{% block main %}
+    <h1>Liste des sorties</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Début</th>
+                <th>Durée</th>
+                <th>Inscriptions jusqu'au</th>
+                <th>Places</th>
+                <th>Etat</th>
+                <th>Organisateur</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for sortie in sorties %}
+            <tr>
+                <td>{{ sortie.nom }}</td>
+                <td>{{ sortie.dateHeureDebut ? sortie.dateHeureDebut|date('d/m/Y H:i', "Europe/Paris") : '' }}</td>
+                <td>{{ sortie.duree }} minutes</td>
+                <td>{{ sortie.datecloture ? sortie.datecloture|date('d/m/Y', "Europe/Paris") : '' }}</td>
+                <td>{{ sortie.nbinscriptionsmax }}</td>
+                <td>{{ sortie.etat.id }} - {{ sortie.etat.libelle }}</td>
+                <td>{{ sortie.organisateur.nomPrenom }}</td>
+                <td>
+                    <a href="{{ path('sortie_edit', {'noSortie': sortie.noSortie}) }}">Ouvrir</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="13">Aucune sortie enregistrée pour le moment.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('sortie_new') }}" class="btn btn-primary">Créer une sortie</a>
+{% endblock %}

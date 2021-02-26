@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset ('css/sortie.css') }}">
+{% endblock %}
+
+{% block title %}Modifier la sortie{% endblock %}
+
+{% block main %}
+    <h1>Modifier la sortie</h1>
+
+    {{ include('sortie/_form.html.twig', {'button_label': 'Enregistrer'}) }}
+
+    <a href="{{ path('sortie_index') }}" class="btn btn-primary">Retour à la liste</a>
+
+    {{ include('sortie/_delete_form.html.twig') }}
+{% endblock %}
