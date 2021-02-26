@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Etat;
 use App\Entity\Sortie;
 use App\Form\SortieType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -35,9 +36,16 @@ class SortieController extends AbstractController
      */
     public function new(Request $request): Response
     {
+        /* TODO filtrer sur le rôle 'organisateur' */
+
         $sortie = new Sortie();
 
-        $organisateur = $this->getUser();;
+        $etat = $this->getDoctrine()
+            ->getRepository(Etat::class)
+            ->find(0);
+        $sortie->setEtat($etat);
+
+        $organisateur = $this->getUser();
         $sortie->setOrganisateur($organisateur);
 
         $form = $this->createForm(SortieType::class, $sortie);
@@ -73,8 +81,10 @@ class SortieController extends AbstractController
     {
         $this->ActualiserEtats();
 
-        if($sortie->getEtat()->getId()>2) {
-            return $this->show($sortie);
+        /* TODO ajouter le rôle 'administrateur' dans les conditions du if */
+        if($this->getUser() !== $sortie->getOrganisateur()
+            || $sortie->getEtat()->getId()>2) {
+                return $this->show($sortie);
         }
          else{
              $form = $this->createForm(SortieType::class, $sortie);
@@ -83,6 +93,7 @@ class SortieController extends AbstractController
              if ($form->isSubmitted() && $form->isValid()) {
                  $this->getDoctrine()->getManager()->flush();
 
+                 $this->addFlash('success','La sortie a été enregistrée.');
                  return $this->redirectToRoute('sortie_index');
              }
 
@@ -100,6 +111,12 @@ class SortieController extends AbstractController
     {
         $this->ActualiserEtats();
 
+        /* TODO ajouter le rôle 'administrateur' dans les conditions du if */
+        if($sortie->getEtat()->getId() != 0) {
+            $this->addFlash('error','Vous ne pouvez pas supprimer cette sortie.');
+            return $this->show($sortie);
+        }
+
         if ($this->isCsrfTokenValid('delete'.$sortie->getNoSortie(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($sortie);
@@ -114,6 +131,60 @@ class SortieController extends AbstractController
         //Recalcule les états avant affichage
         $sortiesRepo = $this->getDoctrine()->getRepository(Sortie::class);
         $sortiesRepo->updateEtats();
+    }
+
+    /**
+     * @Route("/{noSortie}/publier", name="sortie_publier", methods={"PUBLIER"})
+     */
+    public function publier(Request $request, Sortie $sortie): Response
+    {
+        /* TODO ajouter le rôle 'administrateur' dans les conditions du if */
+        if($sortie->getEtat()->getId() != 0) {
+            $this->addFlash('error','Vous ne pouvez pas publier cette sortie.');
+            return $this->show($sortie);
+        }
+
+        if ($this->isCsrfTokenValid('publier'.$sortie->getNoSortie(), $request->request->get('_token'))) {
+
+            $etat = $this->getDoctrine()
+                ->getRepository(Etat::class)
+                ->find(1);
+            $sortie->setEtat($etat);
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->flush();
+            $this->addFlash('success','La sortie a été publiée.');
+        }
+
+        return $this->redirectToRoute('sortie_index');
+
+    }
+
+    /**
+     * @Route("/{noSortie}/annuler", name="sortie_annuler", methods={"ANNULER"})
+     */
+    public function annuler(Request $request, Sortie $sortie): Response
+    {
+        /* TODO ajouter le rôle 'administrateur' dans les conditions du if */
+        if($sortie->getEtat()->getId() != 1) {
+            $this->addFlash('error','Vous ne pouvez pas annuler cette sortie.');
+            return $this->show($sortie);
+        }
+
+        if ($this->isCsrfTokenValid('annuler'.$sortie->getNoSortie(), $request->request->get('_token'))) {
+
+            $etat = $this->getDoctrine()
+                ->getRepository(Etat::class)
+                ->find(5);
+            $sortie->setEtat($etat);
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->flush();
+            $this->addFlash('success','La sortie a été annulée.');
+        }
+
+        return $this->redirectToRoute('sortie_index');
+
     }
 
 }

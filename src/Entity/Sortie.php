@@ -263,7 +263,7 @@ class Sortie
         // et supérieure à aujourd'hui
         $now = new \DateTime();
         if ($this->getDateCloture() > $this->getDateHeureDebut()
-            || $this->getDateCloture()>$now){
+            || $this->getDateCloture()<$now){
             $context->buildViolation("La date est incorrecte.")
                 ->atPath('dateCloture')
                 ->addViolation();

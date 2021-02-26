@@ -1,0 +1,6 @@
+<form method="post" action="{{ path('sortie_publier', {'noSortie': sortie.noSortie}) }}" onsubmit="return confirm('Confirmez-vous la publication de la sortie ?');">
+    <input type="hidden" name="_method" value="PUBLIER">
+    <input type="hidden" name="_token" value="{{ csrf_token('publier' ~ sortie.noSortie) }}">
+    <br>
+    <button class="btn btn-primary">Publier</button>
+</form>

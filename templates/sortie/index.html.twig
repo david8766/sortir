@@ -22,9 +22,9 @@
         {% for sortie in sorties %}
             <tr>
                 <td>{{ sortie.nom }}</td>
-                <td>{{ sortie.dateHeureDebut ? sortie.dateHeureDebut|date('d/m/Y H:i', "Europe/Paris") : '' }}</td>
+                <td>{{ sortie.dateHeureDebut ? sortie.dateHeureDebut|date('d/m/Y H:i') : '' }}</td>
                 <td>{{ sortie.duree }} minutes</td>
-                <td>{{ sortie.datecloture ? sortie.datecloture|date('d/m/Y', "Europe/Paris") : '' }}</td>
+                <td>{{ sortie.datecloture ? sortie.datecloture|date('d/m/Y') : '' }}</td>
                 <td>{{ sortie.nbinscriptionsmax }}</td>
                 <td>{{ sortie.etat.id }} - {{ sortie.etat.libelle }}</td>
                 <td>{{ sortie.organisateur.nomPrenom }}</td>

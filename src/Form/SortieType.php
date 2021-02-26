@@ -41,13 +41,13 @@ class SortieType extends AbstractType
                 'label'=>'Durée',
                 'required' => true,
                 'attr'=>['placeholder'=>'En minutes']
-                ])
+            ])
             ->add('dateCloture', DateType::class, [
-                    'label'=>'Clôture des inscriptions',
-                    'required' => true,
-                    'widget' => 'single_text',
-                    'html5' => true,
-                    ])
+                'label'=>'Clôture des inscriptions',
+                'required' => true,
+                'widget' => 'single_text',
+                'html5' => true,
+            ])
             ->add('nbInscriptionsMax', IntegerType::class, [
                 'label'=>'Nombre de places',
                 'required' => true,
@@ -58,12 +58,6 @@ class SortieType extends AbstractType
                 'label'=>'Description',
                 'required' => true,
                 'attr'=>['placeholder'=>'Décrivez les activités']
-            ])
-
-            ->add('organisateur', EntityType::class, [
-                'class' => Participant::class,
-                'choice_label' => 'nomPrenom',
-                'placeholder' => 'Sélectionnez un organisateur',
             ])
 
             ->add('campus', EntityType::class, [

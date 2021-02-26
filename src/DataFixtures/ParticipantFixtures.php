@@ -169,7 +169,7 @@ class ParticipantFixtures extends Fixture
             $sortie->setDateHeureDebut($debut);
 
             $cloture = $debut;
-            $cloture->setTime(0,0,0);
+            //$cloture->setTime(0,0,0);
             $di = new DateInterval('P3D');
             $di->invert=1;
             $cloture->add($di);
@@ -182,7 +182,7 @@ class ParticipantFixtures extends Fixture
             $h =  rand(1,5) * 15;
             $sortie->setNbInscriptionsMax($h);
 
-            $etat = $manager->getRepository('App:Etat')->findOneById(rand(0,1));
+            $etat = $manager->getRepository(Etat::class)->find(rand(0,1));
             $sortie->setEtat($etat);
 
             $sortie->setOrganisateur($participant);

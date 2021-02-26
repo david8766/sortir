@@ -1,23 +1,34 @@
-    <div class="colSortie">
-        {{ form_start(form) }}
-        <div class="colSortie1">
-            {{ form_row(form.nom) }}
-            {{ form_row(form.dateHeureDebut) }}
-            {{ form_row(form.duree) }}
-            {{ form_row(form.dateCloture) }}
-            {{ form_row(form.nbInscriptionsMax) }}
-
-        </div>
-        <div class="colSortie2">
-            {{ form_row(form.description) }}
-            {{ form_row(form.organisateur) }}
-            {{ form_row(form.campus) }}
-        </div>
-        <div>
-            <button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
-            {{ form_end(form) }}
-        </div>
+{{ form_start(form) }}
+<div class="colSortie1">
+    <div class="etat">
+        &gt; {{ sortie.etat.libelle }}
     </div>
+    {{ form_row(form.nom) }}
+    {{ form_row(form.dateHeureDebut) }}
+    {{ form_row(form.duree) }}
+    {{ form_row(form.dateCloture) }}
+    {{ form_row(form.nbInscriptionsMax) }}
+</div>
+<div class="colSortie2">
+    <div class="etat">
+        Organisée par {{ sortie.organisateur.nomPrenom }}
+    </div>
+    {{ form_row(form.description) }}
+    {{ form_row(form.campus) }}
+    <br>
+</div>
+<div>
+    <div class="boutons">
+        <button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
+    </div>
+    <div class="boutons">
+        <a href="{{ path('sortie_index') }}" class="btn btn-primary">Retour à la liste</a>
+    </div>
+</div>
+{{ form_end(form) }}
+
+
+
 
 
 

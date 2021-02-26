@@ -1,12 +1,12 @@
 
 .colSortie{
-    text-align: center;
+    text-align: left;
+    margin-left: 20px;
 }
 
 .colSortie1{
     width: 400px;
     display: inline-block;
-    margin-left: 20px;
     text-align: left;
     vertical-align: top;
 }
@@ -17,4 +17,18 @@
     margin-left: 40px;
     text-align: left;
     vertical-align: top;
+}
+
+.boutons{
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.etat{
+    border: solid 1px white;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 5px;
+    padding-left: 15px;
+    font-size: x-large;
 }

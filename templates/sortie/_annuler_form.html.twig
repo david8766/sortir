@@ -1,0 +1,6 @@
+<form method="post" action="{{ path('sortie_annuler', {'noSortie': sortie.noSortie}) }}" onsubmit="return confirm('Confirmez-vous l\'annulation de la sortie ?');">
+    <input type="hidden" name="_method" value="ANNULER">
+    <input type="hidden" name="_token" value="{{ csrf_token('annuler' ~ sortie.noSortie) }}">
+    <br>
+    <button class="btn btn-primary">Annuler la sortie</button>
+</form>
