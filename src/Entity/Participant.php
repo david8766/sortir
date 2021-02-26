@@ -92,7 +92,7 @@ class Participant implements UserInterface
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $token;
+    private $reset_token;
 
 
     public function getId(): ?int
@@ -241,14 +241,14 @@ class Participant implements UserInterface
         return strtoupper($this->nom) . ' ' . $this->prenom;
     }
 
-    public function getToken(): ?string
+    public function getResetToken(): ?string
     {
-        return $this->token;
+        return $this->reset_token;
     }
 
-    public function setToken(?string $token): self
+    public function setResetToken(?string $reset_token): self
     {
-        $this->token = $token;
+        $this->reset_token = $reset_token;
 
         return $this;
     }
