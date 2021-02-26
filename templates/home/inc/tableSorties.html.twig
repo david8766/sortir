@@ -29,7 +29,19 @@
                          {% endif %} #} -- Inscrit ou pas ? --
                     </td>
                     <td><a href="{{ path('afficherProfil', {'id':  sortie.organisateur.id}) }}">{{ sortie.organisateur.prenom }} {{ initiales(sortie.organisateur.nom) }}</a></td>
-                    <td>++ Liens en fonction de l'état et des organisateurs++ </td>
+                    <td>
+                        <a href="{{ path('sortie_edit', {'noSortie': sortie.noSortie}) }}">Afficher</a>
+                        {# {% if app.user != sortie.inscriptions.perticipant %}
+                             <a href="{{ path('inscription')}}"> - S'inscrire</a>
+                        {% else %}
+                            {% if app.user != sortie.organisatur %}
+                            <a href="{{ path('seDesister') }}"> - Se désister</a>
+                            {% else %}
+                            <a href="{{ path('sortie_delete' }}"> - Annuler la sortie</a>
+                            {% endif %}
+                        {% endif %} #}
+
+                    </td>
                 </tr>
                {% endfor %}
 

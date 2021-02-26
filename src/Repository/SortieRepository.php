@@ -20,7 +20,7 @@ class SortieRepository extends ServiceEntityRepository
         parent::__construct($registry, Sortie::class);
     }
 
-    public function findByAllFilters($campus, $recherche, $dateDebut, $dateFin, $organisateur)
+    public function findByAllFilters($campus, $recherche, $dateDebut, $dateFin, $organisateur,$etatSortiesPassees)
     {
 
         $qb = $this->createQueryBuilder('s');
@@ -47,6 +47,10 @@ class SortieRepository extends ServiceEntityRepository
         if($organisateur != null){
             $qb ->andWhere('p.id = :organisateur')
                 ->setParameter('organisateur', $organisateur);
+        }
+        if($etatSortiesPassees != null){
+            $qb ->andWhere('s.etat = :etatSortiesPassees')
+                ->setParameter('etatSortiesPassees',$etatSortiesPassees);
         }
             $qb->addOrderBy('s.dateHeureDebut');
         $query = $qb->getQuery();
