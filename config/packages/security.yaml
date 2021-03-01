@@ -41,3 +41,4 @@ security:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/motDePasseOublie, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, roles: ROLE_PARTICIPANT }
+        - { path: ^/, roles: ROLE_ADMIN }
