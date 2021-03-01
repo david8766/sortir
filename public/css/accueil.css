@@ -78,4 +78,6 @@ label{
 .flash-error, .flash-noResults{
     background-color: #AA3333;
 }
-
+#creationSortie{
+    text-align: center;
+}

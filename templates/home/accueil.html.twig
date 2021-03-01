@@ -11,12 +11,14 @@
 
     {% include 'home/inc/formFiltre.html.twig' %}
 
-    {#
-    {% include 'home/inc/tableSorties.html.twig' %}
-     #}
 
-{#
-    <button><a href="{{ path('sortie/add') }}">Créer une sortie</a></button>
-#}
+    {% include 'home/inc/tableSorties.html.twig' %}
+
+
+<form action="{{ path('sortie_new') }}" id="creationSortie">
+    <button class="btn btn-primary" type="submit">Proposer une nouvelle sortie</button>
+</form><br>
+
+
 
 {% endblock %}
