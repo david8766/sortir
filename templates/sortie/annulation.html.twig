@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset ('css/sortie.css') }}">
+{% endblock %}
+
+{% block title %}Annulation de la sortie{% endblock %}
+
+{% block main %}
+    <h1>Annulation de la sortie "{{ sortie.nom }}"</h1>
+    {{ form_start(form) }}
+     <div class="colSortie">
+        <div class="colSortie2">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th>Nom</th>
+                        <td>{{ sortie.nom }}</td>
+                    </tr>
+                    <tr>
+                        <th>Date de la sortie</th>
+                        <td>{{ sortie.dateHeureDebut ? sortie.dateHeureDebut|date('d/m/Y H:i:s') : '' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Campus</th>
+                        <td>{{ sortie.campus.nom }}</td>
+                    </tr>
+                    <tr>
+                        <th>Motif d'annulation</th>
+                        <td>{{ form_row(form.motifAnnulation) }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="boutons">
+                <a href="{{ path('sortie_edit', {'noSortie': sortie.noSortie}) }}" class="btn btn-primary">Retour</a>
+            </div>
+            <div class="boutons">
+                <button class="btn btn-primary">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+
+    {{ form_end(form) }}
+{% endblock %}

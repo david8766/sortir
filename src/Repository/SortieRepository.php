@@ -90,8 +90,8 @@ class SortieRepository extends ServiceEntityRepository
             ->setParameter('now', $now)
             ->execute();
 
-        // sorties archivées apres 60 jours
-        $di = new DateInterval('P6D');
+        // sorties archivées apres 30 jours
+        $di = new DateInterval('P3D');
         $di->invert=1;
         $dateArchive = new \DateTime('midnight');
         $dateArchive->add($di);
