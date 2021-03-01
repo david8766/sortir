@@ -1,7 +1,7 @@
 
 .colSortie{
-    text-align: left;
-    margin-left: 20px;
+    text-align: center;
+    margin-bottom: 50px;
 }
 
 .colSortie1{
@@ -9,12 +9,12 @@
     display: inline-block;
     text-align: left;
     vertical-align: top;
+    margin-right: 30px;
 }
 
 .colSortie2{
     width: 700px;
     display: inline-block;
-    margin-left: 40px;
     text-align: left;
     vertical-align: top;
 }
@@ -25,10 +25,17 @@
 }
 
 .etat{
+    text-align: left;
     border: solid 1px white;
     margin-top: 20px;
     margin-bottom: 20px;
     padding: 5px;
     padding-left: 15px;
     font-size: x-large;
+}
+
+.annulation{
+    font-size: large;
+    font-style: italic;
+    font-weight: bold ;
 }

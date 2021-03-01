@@ -11,49 +11,58 @@
 
     <div class="colSortie">
 
-        <div class="etat">
-            &gt; {{ sortie.etat.libelle }}
+        <div class="colSortie2">
+
+            <div class="etat">
+                &gt; {{ sortie.etat.libelle }}
+                {% if sortie.etat.id==5 %}
+                    <div class="annulation">
+                        Motif :<br>
+                        {{ sortie.motifAnnulation }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th>Date de la sortie</th>
+                        <td>{{ sortie.dateHeureDebut ? sortie.dateHeureDebut|date('d/m/Y H:i') : '' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Durée</th>
+                        <td>{{ sortie.duree }} minutes</td>
+                    </tr>
+                    <tr>
+                        <th>Inscriptions jusqu'au</th>
+                        <td>{{ sortie.dateCloture ? sortie.dateCloture|date('d/m/Y') : '' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Nombre de places</th>
+                        <td>{{ sortie.nbInscriptionsMax }} personnes</td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td>{{ sortie.description }}</td>
+                    </tr>
+                    <tr>
+                        <th>Organisateur</th>
+                        <td>{{ sortie.organisateur.nomPrenom }}</td>
+                    </tr>
+                    <tr>
+                        <th>Campus</th>
+                        <td>{{ sortie.campus.nom }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            {% if app.user is same as (sortie.organisateur) and sortie.etat.id<3  %}
+                <a href="{{ path('sortie_edit', {'noSortie': sortie.noSortie}) }}" class="btn btn-primary">Modifier</a>
+            {% endif %}
+
+            <a href="{{ path('sortie_index') }}" class="btn btn-primary">Retour à la liste</a>
+
         </div>
-
-        <table class="table">
-            <tbody>
-                <tr>
-                    <th>Date de la sortie</th>
-                    <td>{{ sortie.dateHeureDebut ? sortie.dateHeureDebut|date('d/m/Y H:i:s') : '' }}</td>
-                </tr>
-                <tr>
-                    <th>Durée</th>
-                    <td>{{ sortie.duree }} minutes</td>
-                </tr>
-                <tr>
-                    <th>Inscriptions jusqu'au</th>
-                    <td>{{ sortie.dateCloture ? sortie.dateCloture|date('d/m/Y') : '' }}</td>
-                </tr>
-                <tr>
-                    <th>Nombre de places</th>
-                    <td>{{ sortie.nbInscriptionsMax }} personnes</td>
-                </tr>
-                <tr>
-                    <th>Description</th>
-                    <td>{{ sortie.description }}</td>
-                </tr>
-                <tr>
-                    <th>Organisateur</th>
-                    <td>{{ sortie.organisateur.nomPrenom }}</td>
-                </tr>
-                <tr>
-                    <th>Campus</th>
-                    <td>{{ sortie.campus.nom }}</td>
-                </tr>
-            </tbody>
-        </table>
-
-        {% if app.user is same as (sortie.organisateur)  %}
-            <a href="{{ path('sortie_edit', {'noSortie': sortie.noSortie}) }}" class="btn btn-primary">Modifier</a>
-        {% endif %}
-
-        <a href="{{ path('sortie_index') }}" class="btn btn-primary">Retour à la liste</a>
-
     </div>
 
 {% endblock %}

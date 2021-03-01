@@ -78,6 +78,12 @@ class Sortie
      */
     private $inscriptions;
 
+    /**
+     * @Assert\Length(max=250, maxMessage="250 caractères maximum.")
+     * @ORM\Column(name="motif_annulation", type="string", length=250, nullable=true)
+     */
+    private $motifAnnulation;
+
     public function __construct()
     {
         $this->inscriptions = new ArrayCollection();
@@ -301,7 +307,20 @@ class Sortie
         return $this;
     }
 
-   
+    /**
+     * @return mixed
+     */
+    public function getMotifAnnulation()
+    {
+        return $this->motifAnnulation;
+    }
 
+    /**
+     * @param mixed $motifAnnulation
+     */
+    public function setMotifAnnulation($motifAnnulation): void
+    {
+        $this->motifAnnulation = $motifAnnulation;
+    }
 
 }
