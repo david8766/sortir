@@ -60,8 +60,8 @@ class ParticipantFixtures extends Fixture
         $admin->setTelephone("06-12-34-56-78");
         $admin->setMail("admin@gmail.com");
         $admin->setMotDePasse(($this->passwordEncoder->encodePassword($admin, 'password')));
-        $admin->setAdministrateur(true);
         $admin->setActif(true);
+        $admin->setRoles(['ROLE_ADMIN']);
 
         $manager->persist($admin);
 
@@ -78,8 +78,8 @@ class ParticipantFixtures extends Fixture
             $participant->setTelephone($faker->phoneNumber);
             $participant->setMail($faker->email);
             $participant->setMotDePasse(($this->passwordEncoder->encodePassword($admin, 'password')));
-            $participant->setAdministrateur(false);
             $participant->setActif(true);
+            $participant->setRoles(['ROLE_PARTICIPANT']);
 
             $manager->persist($participant);
         }

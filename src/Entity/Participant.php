@@ -66,12 +66,6 @@ class Participant implements UserInterface
      */
     private $motDePasse;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="administrateur", type="boolean", nullable=false)
-     */
-    private $administrateur;
 
     /**
      * @var bool
@@ -185,18 +179,6 @@ class Participant implements UserInterface
     public function setMotDePasse(string $motDePasse): self
     {
         $this->motDePasse = $motDePasse;
-
-        return $this;
-    }
-
-    public function getAdministrateur(): ?bool
-    {
-        return $this->administrateur;
-    }
-
-    public function setAdministrateur(bool $administrateur): self
-    {
-        $this->administrateur = $administrateur;
 
         return $this;
     }
