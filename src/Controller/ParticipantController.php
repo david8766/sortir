@@ -6,6 +6,7 @@ use App\Entity\Participant;
 use App\Form\NewPasswordType;
 use App\Form\ParticipantType;
 use App\Form\ResetPasswordType;
+use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Swift_Mailer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -59,9 +60,10 @@ class ParticipantController extends AbstractController
      * @param Request $request
      * @param EntityManagerInterface $em
      * @param UserPasswordEncoderInterface $encoder
+     * @param FileUploader $fileUploader
      * @return Response
      */
-    public function modifierProfil(Request $request, EntityManagerInterface $em, UserPasswordEncoderInterface $encoder): Response
+    public function modifierProfil(Request $request, EntityManagerInterface $em, UserPasswordEncoderInterface $encoder, FileUploader $fileUploader): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $participant = $this->getUser();
@@ -71,14 +73,22 @@ class ParticipantController extends AbstractController
         if($participantForm->isSubmitted() && $participantForm->isValid()){
             $hashed = $encoder->encodePassword($participant, $participant->getPassword());
             $participant->setMotDePasse($hashed);
+
+            // Ajout photo de profil
+            $imageFile = $participantForm->get('image')->getData();
+            if ($imageFile) {
+                $imageFileName = $fileUploader->upload($imageFile);
+                $participant->setImageFilename($imageFileName);
+            }
+
             $em->persist($participant);
             $em->flush();
             $this->addFlash('success',"Votre modification est bien enregistrée!");
-            $this->redirectToRoute('accueil');
         }
 
         return $this->render('participant/monProfil.html.twig',[
-            "participantForm" => $participantForm->createView()
+            "participantForm" => $participantForm->createView(),
+            "participant" => $participant
         ]);
     }
 

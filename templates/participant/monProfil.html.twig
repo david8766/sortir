@@ -2,19 +2,30 @@
 
 {% block title %}Sortir.com | Mon profil{% endblock %}
 
+{% block stylesheets %}
+ <style>input{margin-left: 0px}</style>
+{% endblock %}
+
 {% block main %}
 <div class="container-fluid">
     <div class="row">
-        <div class="col-4"></div>
-        <div class="col-4">
-            <div class="row"><h1 class="my-4">Mon Profil</h1></div>
+        <div class="col-12 col-sm-12 col-md-4 my-5">
+            <div class="row mx-5 ">
+            {% if participant.imageFilename %}
+            <img src="{{ asset('images/uploads/participants/' ~ participant.imageFilename) }}" alt="image de profil" class="img-fluid img-thumbnail"
+                style="height: 200px; width:200px"
+            >
+            {% endif %}
+            </div>
+        </div>
+        <div class="col-12 col-sm-12 col-md-4">
+            <div class="row"><h1 class="my-5">Mon Profil</h1></div>
             {{ form_start(participantForm) }}
             {{ form_widget(participantForm) }}
             <button type="submit" class="btn btn-success my-3">Valider</button>
             <a href="{{ path('accueil') }}" class="btn btn-danger my-3 ml-2">Annuler</a>
             {{ form_end(participantForm) }}
         </div>
-        <div class="col-4"></div>
     </div>
 </div>
 {% endblock %}

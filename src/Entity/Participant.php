@@ -101,6 +101,11 @@ class Participant implements UserInterface
      */
     private $inscriptions;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $imageFilename;
+
     public function __construct()
     {
         $this->inscriptions = new ArrayCollection();
@@ -302,5 +307,16 @@ class Participant implements UserInterface
         return $this;
     }
 
+    public function getImageFilename(): ?string
+    {
+        return $this->imageFilename;
+    }
+
+    public function setImageFilename(?string $imageFilename): self
+    {
+        $this->imageFilename = $imageFilename;
+
+        return $this;
+    }
 
 }
