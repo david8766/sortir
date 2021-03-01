@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <style>input{margin-left: 0px}</style>
+{% endblock %}
+
+{% block title %}Sortir.com | Administration{% endblock %}
+
+{% block main %}
+<main class="container-fluid">
+    <div class="row text-center">
+        <h1 class="my-5">Administration du site Sortir.com</h1>
+        <h2>Créer un utilisateur :</h2>
+    </div>
+    <div class="row">
+        <div class="col-12 col-sm-12 col-md-4">{% if participant.imageFilename %}
+                <img src="{{ asset('images/uploads/participants/' ~ participant.imageFilename) }}" alt="image de profil" class="img-fluid img-thumbnail"
+                     style=""
+                >
+            {% endif %}
+        </div>
+        <div class="col-12 col-sm-12 col-md-4">
+            {{ form_start(participantForm) }}
+            {{ form_widget(participantForm) }}
+            <button type="submit" class="btn btn-success my-3">Valider</button>
+            <a href="{{ path('admin') }}" class="btn btn-danger my-3 ml-2">Annuler</a>
+            {{ form_end(participantForm) }}
+        </div>
+    </div>
+</main>
+{% endblock %}

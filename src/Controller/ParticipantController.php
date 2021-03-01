@@ -66,10 +66,11 @@ class ParticipantController extends AbstractController
     public function modifierProfil(Request $request, EntityManagerInterface $em, UserPasswordEncoderInterface $encoder, FileUploader $fileUploader): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $participant = $this->getUser();
         $participantForm = $this->createForm(ParticipantType::class,$participant);
-        dump($participant);
         $participantForm->handleRequest($request);
+
         if($participantForm->isSubmitted() && $participantForm->isValid()){
             $hashed = $encoder->encodePassword($participant, $participant->getPassword());
             $participant->setMotDePasse($hashed);

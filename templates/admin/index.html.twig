@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sortir.com | Administration{% endblock %}
+
+{% block main %}
+    <main class="container">
+        <div class="row">
+            <h1 class="my-5">Administration du site Sortir.com</h1>
+        </div>
+        <div class="row my-5">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <a href="{{ path ('admin.create.user') }}">Créer un utilisateur</a>
+                </li>
+                <li class="list-group-item">
+                    <a href="{{ path ('admin.users.list') }}">Voir la liste des utilisateurs</a>
+                </li>
+                <li class="list-group-item">
+                    <a href="{{ path ('admin.csv') }}">Créer des utilisateurs via un fichier csv</a>
+                </li>
+                <li class="list-group-item">Porta ac consectetur ac</li>
+                <li class="list-group-item">Vestibulum at eros</li>
+            </ul>
+        </div>
+    </main>
+{% endblock %}
