@@ -53,6 +53,14 @@
                         <th>Campus</th>
                         <td>{{ sortie.campus.nom }}</td>
                     </tr>
+                    <tr>
+                        <th>Lieu</th>
+                        <td>
+                            {{ sortie.lieu.nomLieu }}<br>
+                            {{ sortie.lieu.rue }}<br>
+                            {{ sortie.ville.codepostal }} {{ sortie.ville.nom }}<br>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
 

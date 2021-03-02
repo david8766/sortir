@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset ('css/villes.css') }}">
+{% endblock %}
+
+{% block title %}Liste des lieux de sortie{% endblock %}
+
+{% block main %}
+    <h1>Liste des lieux de sortie</h1>
+    <div class="contenu">
+        <div class="colVille2">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Rue</th>
+                        <th>Ville</th>
+                        <th>actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for lieu in lieus %}
+                    <tr>
+                        <td>{{ lieu.nomLieu }}</td>
+                        <td>{{ lieu.rue }}</td>
+                        <td>{{ lieu.ville.codepostal }} {{ lieu.ville.nom }}</td>
+                        <td>
+                            <a href="{{ path('lieu_edit', {'id': lieu.id}) }}">Ouvrir</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6">Aucun lieu trouvé</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <a href="{{ path('lieu_new') }}" class="btn btn-primary">Ajouter un lieu</a>
+        </div>
+    </div>
+
+{% endblock %}

@@ -39,3 +39,8 @@
     font-style: italic;
     font-weight: bold ;
 }
+
+.lieu{
+    border: 1px solid white;
+    padding: 15px;
+}
