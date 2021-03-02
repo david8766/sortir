@@ -17,8 +17,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class ParticipantFixtures extends Fixture
 {
-    private UserPasswordEncoderInterface $passwordEncoder;
-
+    
     public function __construct(UserPasswordEncoderInterface $passwordEncoder)
     {
         $this->passwordEncoder = $passwordEncoder;
