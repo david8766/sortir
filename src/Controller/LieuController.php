@@ -31,6 +31,8 @@ class LieuController extends AbstractController
     public function new(Request $request): Response
     {
 
+        $this->denyAccessUnlessGranted("ROLE_ORGANISATEUR");
+
         $lieu = new Lieu();
 
         $form = $this->createForm(LieuType::class, $lieu);
@@ -40,6 +42,8 @@ class LieuController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($lieu);
             $entityManager->flush();
+
+            $this->addFlash('success','Le lieu a été enregistré.');
 
             return $this->redirectToRoute('lieu_index');
         }
@@ -65,11 +69,15 @@ class LieuController extends AbstractController
      */
     public function edit(Request $request, Lieu $lieu): Response
     {
+        $this->denyAccessUnlessGranted("ROLE_ORGANISATEUR");
+
         $form = $this->createForm(LieuType::class, $lieu);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
+
+            $this->addFlash('success','Le lieu a été enregistré.');
 
             return $this->redirectToRoute('lieu_index');
         }
@@ -85,10 +93,12 @@ class LieuController extends AbstractController
      */
     public function delete(Request $request, Lieu $lieu): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$lieu->getNoLieu(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$lieu->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($lieu);
             $entityManager->flush();
+
+            $this->addFlash('success','Le lieu a été supprimé.');
         }
 
         return $this->redirectToRoute('lieu_index');

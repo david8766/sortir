@@ -26,7 +26,7 @@ class HomeController extends AbstractController
      */
     public function accueil(Request $request): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_PARTICIPANT');
+
         //Mise à jour de l'état des sorties et appel aux repositories
         $this->actualiserEtats();
         $campusList = $this->getDoctrine()->getRepository(Campus::class)->findAll();

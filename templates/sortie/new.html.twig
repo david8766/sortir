@@ -12,3 +12,10 @@
     {{ include('sortie/_form.html.twig') }}
 
 {% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/jquery-3.5.1.min.js') }}"></script>
+    <script src="{{ asset('js/sortie.js') }}"></script>
+    <script>abonnement()</script>
+{% endblock %}
+
