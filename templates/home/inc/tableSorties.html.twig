@@ -22,19 +22,20 @@
                     <td>{{ sortie.nom }}</td>
                     <td>{{ sortie.dateHeureDebut | date('d/m/Y') }} - {{ sortie.dateHeureDebut | date('H') }}H{{ sortie.dateHeureDebut | date('i') }}</td>
                     <td>{{ sortie.dateCloture | date('d/m/Y') }}</td>
-                    <td> ++nombre de participants++ / {{ sortie.nbInscriptionsMax }}</td>
+                    <td>{#  {{ countNbParticipants(sortie) }}#}--nb Participants-- / {{ sortie.nbInscriptionsMax }}</td>
                     <td>{{ sortie.etat.libelle }}</td>
-                    <td>{{ isInscrit(mesSortiesCommeInscrit, sortie) }}</td>
+                    <td>{{ isInscrit(sortie, app.User) }}</td>
                     <td><a href="{{ path('afficherProfil', {'id':  sortie.organisateur.id}) }}">{{ sortie.organisateur.prenom }} {{ initiales(sortie.organisateur.nom) }}</a></td>
                     <td>
                         <a href="{{ path('sortie_edit', {'noSortie': sortie.noSortie}) }}">Afficher</a>
-                        {% if action(mesSortiesCommeInscrit, sortie, app.user)  == 1 %}
+
+                        {% if action(sortie, app.user)  == 1 %}
                         <a href="{{ path('inscription', {'noSortie' : sortie.noSortie}) }}"> - S'inscrire</a>
                         {% endif %}
-                        {% if action(mesSortiesCommeInscrit, sortie, app.user) == 2 %}
-                        <a href="{{ path('seDesister',{'idInscription': mesInscription.idInscription}) }}"> - Se désister</a>
+                        {% if action(sortie, app.user) == 2 %}
+                        <a href="{{ path('seDesister',{'noSortie': sortie.noSortie}) }}"> - Se désister</a>
                         {% endif %}
-                        {% if action(mesSortiesCommeInscrit, sortie, app.user) == 3 %}
+                        {% if action(sortie, app.user) == 3 %}
                         <a href="{{ path('sortie_delete') }}"> - Annuler la sortie</a>
                         {% endif %}
                     </td>

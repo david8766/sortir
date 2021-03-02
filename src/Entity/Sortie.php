@@ -99,6 +99,8 @@ class Sortie
         $this->inscriptions = new ArrayCollection();
     }
 
+
+
     /**
      * @return mixed
      */

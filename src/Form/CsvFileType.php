@@ -21,6 +21,8 @@ class CsvFileType extends AbstractType
                     new File([
                         'mimeTypes' => [
                             'text/csv',
+                            'text/plain',
+                            'application/vnd.ms-excel'
                         ],
                         'mimeTypesMessage' => 'Vous devez choisir un format csv pour ce fichier.',
                     ])

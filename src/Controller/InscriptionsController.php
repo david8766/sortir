@@ -41,12 +41,20 @@ class InscriptionsController extends AbstractController
     }
 
     /**
-     * @Route("/{idInscription}", name="seDesister")
+     * @Route("/{noSortie}", name="seDesister")
      */
     public function seDesister(Request $request): Response
     {
-        $id = $request->get('idInscription',null);
-        $inscription = $this->getDoctrine()->getRepository(Inscriptions::class)->find($id);
+        $noSortie = $request->get('noSortie',null);
+        $sortie = $this->getDoctrine()->getRepository(Sortie::class)->find($noSortie);
+        $listeInscriptions = $sortie->getInscriptions();
+        foreach ($listeInscriptions as $i){
+            $inscrit = $i->getParticipant();
+            if($inscrit == $this->getUser()){
+                $idInscription = $i->getIdInscription();
+            }
+        }
+        $inscription = $this->getDoctrine()->getRepository(Inscriptions::class)->find($idInscription);
         $entityManager = $this->getDoctrine()->getManager();
         try {
             $entityManager->remove($inscription);
@@ -55,6 +63,12 @@ class InscriptionsController extends AbstractController
         }catch(Exception $e){
             $this->addFlash('error', 'Votre désistement a échoué !');
         }
+
         return $this->redirectToRoute('accueil');
+    }
+
+    public function getNombrePartcipant($sortie){
+        $nbParticipants = count($sortie->getInscriptions());
+        return $nbParticipants;
     }
 }

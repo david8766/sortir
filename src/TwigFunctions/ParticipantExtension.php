@@ -4,6 +4,7 @@
 namespace App\TwigFunctions;
 
 
+
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -16,6 +17,7 @@ class ParticipantExtension extends AbstractExtension
             new TwigFunction('initiales', [$this, 'getInitiales',]),
             new TwigFunction('isInscrit', [$this, 'isInscrit']),
             new TwigFunction('action', [$this, 'action']),
+            new TwigFunction('countNbParticipants', [$this, 'countNbParticipants'] )
         ];
     }
 
@@ -29,39 +31,49 @@ class ParticipantExtension extends AbstractExtension
         return strtoupper($nom_initiale);
     }
 
-    public function isInscrit($listeInscriptions, $sortie): string
+    public function countNbParticipants($sortie): int
     {
+    return $nbParticipants = count($sortie->getInscriptions());
+    }
+
+    public function isInscrit($sortie, $user): string
+    {
+        $listeInscriptions = $sortie->getInscriptions();
         $isInscrit = "non inscrit";
         foreach ($listeInscriptions as $i){
-            $sortieInscrite = $i->getSortie();
-            if($sortie == $sortieInscrite){
+            $participant = $i->getParticipant();
+            if($participant == $user){
                 $isInscrit = "inscrit";
             }
         }
         return $isInscrit;
+
     }
 
-    public function action($listeInscriptions, $sortie, $user):string
+    public function action($sortie, $user):int
     {
         //Renvoi un code action en fonction de l'état de l'utilisateur vis à vis de la sortie
         // 0 pour ne rien faire (inscriptions non ouverte), 1 pour "s'inscrire", 2 pour "se désister", 3 pour "Annuler la sortie.
-        $action = "0";
-        foreach ($listeInscriptions as $i) {
-            $sortieInscrite = $i->getSortie();
-            $sortieOrganisateur = $sortieInscrite->getOrganisateur();
-            $sortieEtat = $i->getEtat();
-            if($sortieEtat == 1){
-                $action = "1";
+        $sortieEtat = $sortie->getEtat()->getId();
+        $listeInscriptions = $sortie->getInscriptions();
+        if($sortieEtat == 1){
+            $action = 1;
+            foreach ($listeInscriptions as $i) {
+                $sortieInscrite = $i->getSortie();
+                $sortieOrganisateur = $sortieInscrite->getOrganisateur();
                 if ($sortie == $sortieInscrite) {
-                    $action = "2";
+                    $action = 2;
                 }
-                if ($sortieOrganisateur == $user){
-                    $action = "3";
+                if ($sortieOrganisateur == $user) {
+                    $action = 3;
                 }
             }
-        }
+        }else{
+                $action = 0;
+            }
         return $action;
     }
+
 
 
 }

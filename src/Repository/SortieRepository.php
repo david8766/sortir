@@ -4,8 +4,10 @@ namespace App\Repository;
 
 use App\Entity\Sortie;
 use DateInterval;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use function Doctrine\ORM\QueryBuilder;
 
 /**
  * @method Sortie|null find($id, $lockMode = null, $lockVersion = null)
@@ -20,14 +22,25 @@ class SortieRepository extends ServiceEntityRepository
         parent::__construct($registry, Sortie::class);
     }
 
-    public function findByAllFilters($campus, $recherche, $dateDebut, $dateFin, $organisateur,$etatSortiesPassees)
+    public function findByAllFilters(
+        $campus,
+        $recherche,
+        $dateDebut,
+        $dateFin,
+        $organisateur,
+        $etatSortiesPassees/*,
+        $sortiesCommeInscrit,
+        $sortiesNonInscrit*/)
     {
 
         $qb = $this->createQueryBuilder('s');
         $qb ->join('s.campus', 'c')
             ->addSelect('c')
             ->join('s.organisateur', 'p')
-            ->addSelect('p');
+            ->addSelect('p')
+            /*->join('s.inscriptions', 'i')
+            ->addSelect('i')*/;
+
         if($campus != null){
             $qb ->andWhere('c.id = :campus')
                 ->setParameter('campus', $campus);
@@ -52,6 +65,14 @@ class SortieRepository extends ServiceEntityRepository
             $qb ->andWhere('s.etat = :etatSortiesPassees')
                 ->setParameter('etatSortiesPassees',$etatSortiesPassees);
         }
+        /*if($sortiesCommeInscrit != null){
+            $qb ->andWhere('i.participant = :sortiesCommeInscrit')
+                ->setParameter('sortiesCommeInscrit', $sortiesCommeInscrit);
+        }
+        if($sortiesNonInscrit != null){
+            $qb ->andWhere('i.participant != :sortiesNonInscrit')
+                ->setParameter('sortiesNonInscrit', $sortiesNonInscrit);
+        }*/
             $qb->addOrderBy('s.dateHeureDebut');
         $query = $qb->getQuery();
         return $query->getResult();
@@ -60,7 +81,7 @@ class SortieRepository extends ServiceEntityRepository
     public function updateEtats(){
 
         // inscriptions closes
-        $now = new \DateTime();
+        $now = new DateTime();
 
         $em = $this->getEntityManager();
         $dql = "UPDATE App\Entity\Sortie s 
@@ -80,7 +101,7 @@ class SortieRepository extends ServiceEntityRepository
             ->execute();
 
         // sorties passées
-        $now = new \DateTime();
+        $now = new DateTime();
 
         $em = $this->getEntityManager();
         $dql = "UPDATE App\Entity\Sortie s 
@@ -93,7 +114,7 @@ class SortieRepository extends ServiceEntityRepository
         // sorties archivées apres 30 jours
         $di = new DateInterval('P3D');
         $di->invert=1;
-        $dateArchive = new \DateTime('midnight');
+        $dateArchive = new DateTime('midnight');
         $dateArchive->add($di);
 
         $em = $this->getEntityManager();
