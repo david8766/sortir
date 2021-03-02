@@ -30,6 +30,8 @@ class VilleController extends AbstractController
      */
     public function new(Request $request): Response
     {
+        $this->denyAccessUnlessGranted("ROLE_ORGANISATEUR");
+
         $ville = new Ville();
         $form = $this->createForm(VilleType::class, $ville);
         $form->handleRequest($request);
@@ -38,6 +40,8 @@ class VilleController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($ville);
             $entityManager->flush();
+
+            $this->addFlash('success','La ville a été enregistrée.');
 
             return $this->redirectToRoute('ville_index');
         }
@@ -53,11 +57,15 @@ class VilleController extends AbstractController
      */
     public function edit(Request $request, Ville $ville): Response
     {
+        $this->denyAccessUnlessGranted("ROLE_ORGANISATEUR");
+
         $form = $this->createForm(VilleType::class, $ville);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
+
+            $this->addFlash('success','La ville a été enregistrée.');
 
             return $this->redirectToRoute('ville_index');
         }
@@ -73,10 +81,14 @@ class VilleController extends AbstractController
      */
     public function delete(Request $request, Ville $ville): Response
     {
+        $this->denyAccessUnlessGranted("ROLE_ORGANISATEUR");
+
         if ($this->isCsrfTokenValid('delete'.$ville->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($ville);
             $entityManager->flush();
+
+            $this->addFlash('success','La ville a été supprimée.');
         }
 
         return $this->redirectToRoute('ville_index');
