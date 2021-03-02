@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Campus;
 use App\Entity\Participant;
 use App\Form\CsvFileType;
 use App\Form\ParticipantType;
@@ -14,6 +15,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Serializer\Encoder\CsvEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 /**
  * Require ROLE_ADMIN for *every* controller method in this class.
@@ -47,7 +51,6 @@ class AdminController extends AbstractController
         if($participantForm->isSubmitted() && $participantForm->isValid()){
             $hashed = $encoder->encodePassword($participant, $participant->getPassword());
             $participant->setMotDePasse($hashed);
-            $participant->setAdministrateur(false);
             $participant->setActif(true);
             $participant->setRoles(['ROLE_PARTICIPANT']);
 
@@ -92,13 +95,55 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin/telechargerCSV", name="admin.csv")
      * @param Request $request
-     * @param PaginatorInterface $paginator
+     * @param UserPasswordEncoderInterface $encoder
+     * @param EntityManagerInterface $em
      * @return Response
      */
-    public function usersCSV(Request $request, PaginatorInterface $paginator): Response
+    public function usersCSV(Request $request, UserPasswordEncoderInterface $encoder, EntityManagerInterface $em): Response
     {
         $form = $this->createForm(CsvFileType::class);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $csv = $form->get('csv')->getData();
+            $serializer = new Serializer([new ObjectNormalizer()], [new CsvEncoder()]);
+            $data = $serializer->decode(file_get_contents($csv), 'csv');
+            foreach ($data as $user){
+                $participant = new Participant();
+                $participant->setPseudo($user['pseudo']);
+                $participant->setNom($user['nom']);
+                $participant->setPrenom($user['prenom']);
+                $participant->setTelephone($user['telephone']);
+                $participant->setMail($user['mail']);
+                $hashed = $encoder->encodePassword($participant, $user['motdepasse']);
+                $participant->setMotDePasse($hashed);
+                $participant->setActif($user['actif']);
+                $campusRepo = $this->getDoctrine()->getRepository(Campus::class);
+                $campus = $campusRepo->find($user['campus']);
+                $participant->setCampus($campus);
+                $participant->setRoles(['ROLE_PARTICIPANT']);
+                dump($participant);
+
+                $em->persist($participant);
+            }
+            $em->flush();
+            $this->addFlash('success',"Les nouveaux utilisateurs sont bien enregistrés!");
+            return $this->redirectToRoute('admin.users.list');
+        }
         return $this->render('admin/telechargerCSV.html.twig',['csvForm' => $form->createView()]);
+    }
+
+    /**
+     * @Route("/admin/supprimerParticipant/{id}", name="delete.user")
+     * @param Participant $participant
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
+    public function supprimerUnUtilisateur(Participant $participant, EntityManagerInterface $em): Response
+    {
+        $em->remove($participant);
+        $em->flush();
+        $this->addFlash('success','Le participant a bien été supprimé.');
+        return $this->redirectToRoute('admin.users.list');
     }
 
 }
