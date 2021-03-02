@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use DateInterval;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -83,6 +83,16 @@ class Sortie
      * @ORM\Column(name="motif_annulation", type="string", length=250, nullable=true)
      */
     private $motifAnnulation;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Ville")
+     */
+    private $ville;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Lieu")
+     */
+    private $Lieu;
 
     public function __construct()
     {
@@ -256,11 +266,11 @@ class Sortie
     /**
      * @Assert\Callback
      */
-    public function validate(ExecutionContextInterface $context, $payload)
+    public function validate(ExecutionContextInterface $context)
     {
 
         // Vérifie que la date de début n'est pas passée
-        $now = new \DateTime();
+        $now = new DateTime();
         if ($this->getDateHeureDebut()<=$now){
             $context->buildViolation("La date est passée.")
                 ->atPath('dateHeureDebut')
@@ -269,7 +279,7 @@ class Sortie
 
         // Vérifie que la date de cloture des inscriptions est inférieure à la date de la sortie
         // et supérieure à aujourd'hui
-        $now = new \DateTime();
+        $now = new DateTime();
         if ($this->getDateCloture() > $this->getDateHeureDebut()
             || $this->getDateCloture()<$now){
             $context->buildViolation("La date est incorrecte.")
@@ -323,6 +333,38 @@ class Sortie
     public function setMotifAnnulation($motifAnnulation): void
     {
         $this->motifAnnulation = $motifAnnulation;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getVille()
+    {
+        return $this->ville;
+    }
+
+    /**
+     * @param mixed $ville
+     */
+    public function setVille($ville): void
+    {
+        $this->ville = $ville;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLieu()
+    {
+        return $this->Lieu;
+    }
+
+    /**
+     * @param mixed $Lieu
+     */
+    public function setLieu($Lieu): void
+    {
+        $this->Lieu = $Lieu;
     }
 
 }

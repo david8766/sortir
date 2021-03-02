@@ -15,7 +15,15 @@
     </div>
     {{ form_row(form.description) }}
     {{ form_row(form.campus) }}
-    <br>
+    {{ form_row(form.ville) }}
+    {{ form_row(form.lieu) }}
+    {% if sortie.lieu and sortie.ville  %}
+        <div class="lieu">
+            {{ sortie.lieu.rue }}<br>
+            {{ sortie.ville.codepostal }} {{ sortie.ville.nom }}<br>
+        </div>
+        <br>
+    {% endif %}
 </div>
 
 <div>

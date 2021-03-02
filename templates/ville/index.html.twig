@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset ('css/villes.css') }}">
+{% endblock %}
+
+{% block title %}Liste des villes{% endblock %}
+
+{% block main %}
+    <h1>Liste des villes</h1>
+
+    <div class="contenu">
+        <div class="colVille2">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Ville</th>
+                        <th>actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for ville in villes %}
+                    <tr>
+                        <td>{{ ville.codePostal }} {{ ville.nom }}</td>
+                        <td>
+                            <a href="{{ path('ville_edit', {'id': ville.id}) }}">Ouvrir</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4">Aucune ville pour le moment</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <a href="{{ path('ville_new') }}" class="btn btn-primary">Ajouter une ville</a>
+        </div>
+    </div>
+
+{% endblock %}

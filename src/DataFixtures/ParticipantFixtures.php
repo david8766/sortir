@@ -4,8 +4,10 @@ namespace App\DataFixtures;
 
 use App\Entity\Campus;
 use App\Entity\Etat;
+use App\Entity\Lieu;
 use App\Entity\Participant;
 use App\Entity\Sortie;
+use App\Entity\Ville;
 use DateInterval;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -61,7 +63,7 @@ class ParticipantFixtures extends Fixture
         $admin->setMail("admin@gmail.com");
         $admin->setMotDePasse(($this->passwordEncoder->encodePassword($admin, 'password')));
         $admin->setActif(true);
-        $admin->setRoles(['ROLE_ADMIN']);
+        $admin->setRoles(['ROLE_ADMIN', 'ROLE_ORGANISATEUR']);
 
         $manager->persist($admin);
 
@@ -117,10 +119,108 @@ class ParticipantFixtures extends Fixture
         }
         $manager->flush();
 
+        // Création de villes
+        $ville1 = new ville();
+        $ville1->setNom('NANTES');
+        $ville1->setCodePostal('44000');
+        $manager->persist($ville1);
+        $manager->flush();
+
+        $ville2 = new ville();
+        $ville2->setNom('ANNECY');
+        $ville2->setCodePostal('74000');
+        $manager->persist($ville2);
+        $manager->flush();
+
+        $ville3 = new ville();
+        $ville3->setNom('PARIS');
+        $ville3->setCodePostal('75000');
+        $manager->persist($ville3);
+        $manager->flush();
+
+        $ville4 = new ville();
+        $ville4->setNom('LACANAU');
+        $ville4->setCodePostal('33200');
+        $manager->persist($ville4);
+        $manager->flush();
+
+        // Création de lieux
+        $lieu = array();
+
+        $lieu[0] = new lieu();
+        $lieu[0]->setNomLieu("Bar Le Depardieu'");
+        $lieu[0]->setRue("Rue des Boit-sans-soif");
+        $lieu[0]->setVille($ville1);
+        $manager->persist($lieu[0]);
+        $manager->flush();
+
+        $lieu[1] = new lieu();
+        $lieu[1] ->setNomLieu("Base de loisirs");
+        $lieu[1] ->setRue("Quai Alexandre 1er");
+        $lieu[1] ->setVille($ville1);
+        $manager->persist($lieu[1] );
+        $manager->flush();
+
+        $lieu[2]  = new lieu();
+        $lieu[2]->setNomLieu("Le Lieu Unique");
+        $lieu[2]->setRue("Boulevard Quelquechose");
+        $lieu[2]->setVille($ville1);
+        $manager->persist($lieu[2]);
+        $manager->flush();
+
+        $lieu[3] = new lieu();
+        $lieu[3]->setNomLieu("Musée d'Orsay");
+        $lieu[3]->setRue("Quai des Orfèvres");
+        $lieu[3]->setVille($ville3);
+        $manager->persist($lieu[3]);
+        $manager->flush();
+
+        $lieu[4] = new lieu();
+        $lieu[4]->setNomLieu("Le Louvre");
+        $lieu[4]->setRue("Rue de Rivoli");
+        $lieu[4]->setVille($ville3);
+        $manager->persist($lieu[4]);
+        $manager->flush();
+
+        $lieu[5] = new lieu();
+        $lieu[5] ->setNomLieu("Bar à vin 'Le Merlot'");
+        $lieu[5] ->setRue("Place des Grands Hommes");
+        $lieu[5] ->setVille($ville3);
+        $manager->persist($lieu[5] );
+        $manager->flush();
+
+        $lieu[6]  = new lieu();
+        $lieu[6]->setNomLieu("Tour Eiffel");
+        $lieu[6]->setRue("Champs de mars");
+        $lieu[6]->setVille($ville3);
+        $manager->persist($lieu[6]);
+        $manager->flush();
+
+        $lieu[7] = new lieu();
+        $lieu[7]->setNomLieu('Col du Fémure');
+        $lieu[7]->setRue("Route du col");
+        $lieu[7]->setVille($ville2);
+        $manager->persist($lieu[7]);
+        $manager->flush();
+
+        $lieu[8] = new lieu();
+        $lieu[8]->setNomLieu('Plage');
+        $lieu[8]->setRue("Avenue de l'océan");
+        $lieu[8]->setVille($ville4);
+        $manager->persist($lieu[8]);
+        $manager->flush();
+
+        $lieu[9] = new lieu();
+        $lieu[9]->setNomLieu("Restaurant 'Les Dunes'");
+        $lieu[9]->setRue("Rue des Embruns");
+        $lieu[9]->setVille($ville4);
+        $manager->persist($lieu[9]);
+        $manager->flush();
+
         // Création de Sorties fictives.
         $faker = Factory::create('fr_FR');
 
-        for ($i = 1; $i <= 50; $i++){
+        for ($i = 1; $i <= 30; $i++){
 
             switch (rand(1, 7)){
                 case 1 :
@@ -169,7 +269,6 @@ class ParticipantFixtures extends Fixture
             $sortie->setDateHeureDebut($debut);
 
             $cloture = $debut;
-            //$cloture->setTime(0,0,0);
             $di = new DateInterval('P3D');
             $di->invert=1;
             $cloture->add($di);
@@ -187,6 +286,10 @@ class ParticipantFixtures extends Fixture
 
             $sortie->setOrganisateur($participant);
             $sortie->setCampus($campus[mt_rand(0,3)]);
+
+            $idxLieu=mt_rand(0,9);
+            $sortie->setLieu($lieu[$idxLieu]);
+            $sortie->setVille($lieu[$idxLieu]->getVille());
 
             $manager->persist($sortie);
 

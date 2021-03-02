@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset ('css/villes.css') }}">
+{% endblock %}
+
+{% block title %}Lieu{% endblock %}
+
+{% block body %}
+    <h1>Lieu</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>NomLieu</th>
+                <td>{{ lieu.nomLieu }}</td>
+            </tr>
+            <tr>
+                <th>Rue</th>
+                <td>{{ lieu.rue }}</td>
+            </tr>
+            <tr>
+                <th>Latitude</th>
+                <td>{{ lieu.latitude }}</td>
+            </tr>
+            <tr>
+                <th>Longitude</th>
+                <td>{{ lieu.longitude }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('lieu_index') }}">back to list</a>
+
+    <a href="{{ path('lieu_edit', {'noLieu': lieu.id}) }}">edit</a>
+
+    {{ include('lieu/_delete_form.html.twig') }}
+{% endblock %}

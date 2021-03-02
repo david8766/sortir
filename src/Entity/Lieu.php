@@ -2,24 +2,23 @@
 
 namespace App\Entity;
 
+use App\Repository\LieuRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Lieux
- *
- * @ORM\Table(name="lieux", indexes={@ORM\Index(name="lieux_villes_fk", columns={"villes_no_ville"})})
- * @ORM\Entity
+ * @ORM\Table(name="lieu")
+ * @ORM\Entity(repositoryClass=LieuRepository::class)
  */
-class Lieux
+class Lieu
 {
     /**
      * @var int
      *
-     * @ORM\Column(name="no_lieu", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $noLieu;
+    private $id;
 
     /**
      * @var string
@@ -50,15 +49,13 @@ class Lieux
     private $longitude;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="villes_no_ville", type="integer", nullable=false)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Ville")
      */
-    private $villesNoVille;
+    private $Ville;
 
-    public function getNoLieu(): ?int
+    public function getId(): ?int
     {
-        return $this->noLieu;
+        return $this->id;
     }
 
     public function getNomLieu(): ?string
@@ -109,16 +106,20 @@ class Lieux
         return $this;
     }
 
-    public function getVillesNoVille(): ?int
+    /**
+     * @return mixed
+     */
+    public function getVille()
     {
-        return $this->villesNoVille;
+        return $this->Ville;
     }
 
-    public function setVillesNoVille(int $villesNoVille): self
+    /**
+     * @param mixed $Ville
+     */
+    public function setVille($Ville): void
     {
-        $this->villesNoVille = $villesNoVille;
-
-        return $this;
+        $this->Ville = $Ville;
     }
 
 

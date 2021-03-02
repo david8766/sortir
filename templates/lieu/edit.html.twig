@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset ('css/villes.css') }}">
+{% endblock %}
+
+{% block title %}Modifier le lieu{% endblock %}
+
+{% block main %}
+    <h1>Modifier le lieu</h1>
+
+    <div class="contenu">
+        <div class="colVille2">
+            {{ include('lieu/_form.html.twig', {'button_label': 'Enregistrer'}) }}
+            {{ include('lieu/_delete_form.html.twig') }}
+        </div>
+    </div>
+
+{% endblock %}

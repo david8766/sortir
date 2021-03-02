@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset ('css/villes.css') }}">
+{% endblock %}
+
+{% block title %}Nouveau lieu{% endblock %}
+
+{% block main %}
+    <h1>Nouveau lieu</h1>
+
+    <div class="contenu">
+        <div class="colVille2">
+            {{ include('lieu/_form.html.twig') }}
+        </div>
+    </div>
+
+{% endblock %}
