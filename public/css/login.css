@@ -8,13 +8,13 @@ body {
 
 h1{
     font-weight: bold !important;
-    color: saddlebrown;
+    color: #01579b;
     text-shadow: 3px 3px white;
 }
 
 label{
     font-weight: bold;
-    color: saddlebrown;
+    color: #01579b;
     text-shadow: 2px 2px white;
 }
 
@@ -24,7 +24,7 @@ button{
 }
 
 #login{
-    background-color: seashell ;
+    background-color: whitesmoke;
     border: 1px solid;
     padding: 1rem 2rem 1rem 2rem;
 }
