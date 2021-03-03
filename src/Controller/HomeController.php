@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\Common\Collections\ArrayCollection;
+
 
 class HomeController extends AbstractController
 {
@@ -26,14 +28,11 @@ class HomeController extends AbstractController
      */
     public function accueil(Request $request): Response
     {
-
         //Mise à jour de l'état des sorties et appel aux repositories
         $this->actualiserEtats();
         $campusList = $this->getDoctrine()->getRepository(Campus::class)->findAll();
         $sortiesRepo = $this->getDoctrine()->getRepository(Sortie::class);
-        //$inscriptionsRepo = $this->getDoctrine()->getRepository(Inscriptions::class);
-        //$mesInscriptions = $inscriptionsRepo->findBy(['participant' => $this->getUser()]);
-        //$this->session->set('mesInscriptions', $mesInscriptions);
+        $inscriptionsRepo = $this->getDoctrine()->getRepository(Inscriptions::class);
 
         //Récupération de la session pour garder les données de formulaires
         $request->getSession();
@@ -91,20 +90,43 @@ class HomeController extends AbstractController
                 $dateDebut,
                 $dateFin,
                 $organisateur,
-                $etatSortiesPassees/*,
-                $sortiesCommeInscrit,
-                $sortiesNonInscrit*/);
+                $etatSortiesPassees);
 
+            //Effectuer le tri des sorties par inscriptions si les paramètres sortiesCommeInscrit ou sortieNonInscrit sont renseignés.
+            if($sortiesCommeInscrit == "checked" || $sortiesNonInscrit == "checked") {
+                $mesSortiesInscritesEnCours = new ArrayCollection();
+                if($sortiesCommeInscrit == "checked") {
+                    $mesSortiesCommeInscrit = $sortiesRepo->findByMesInscriptionsEnCours($this->getUser());
+                    foreach ($mesSortiesCommeInscrit as $ms){
+                        foreach ($sorties as $s){
+                            if($s == $ms){
+                                $mesSortiesInscritesEnCours->add($ms);
+                            }
+                        }
+                    }
+                }
+                /*if($sortiesNonInscrit == "checked") {
+                    $mesSortiesonInscrit = $sortiesRepo->findByMesInscriptionsPossibles($this->getUser());
+                    foreach ($mesSortiesNonInscrit as $ms){
+                        foreach ($sorties as $s){
+                            if($s == $ms){
+                                $mesSortiesInscritesEnCours->add($ms);
+                            }
+                        }
+                    }
+                }*/
+
+                $sorties = $mesSortiesInscritesEnCours;
+            }
             if ($sorties == null){
                 $this->addFlash('noResults', 'Aucune sortie ne correspond à vos critères');
             }
             $this->session->set('sorties', $sorties);
-        }
 
+        }
         return $this->render('home/accueil.html.twig',[
             "campusList"=>$campusList,
             "sorties"=>$sorties,
-            //"mesInscriptions"=>$mesInscriptions,
             "campusActif"=>$campusActif,
             "dateDebut"=>$dateDebut,
             "dateFin"=>$dateFin,

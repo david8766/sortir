@@ -52,17 +52,19 @@
                                 {% if organisateur != null %} checked {% endif %}>
                         <label for="mesSortiesOrganisees" class="form-check-label">Sorties dont je suis l'organisateur/trice</label><br>
 
-                        <input type="checkbox" class="form-check-input" id="mesInscriptions" name="mesInscriptions" value="{{ app.User.id }}">
-                        <label for="mesInscriptions" class="form-check-label">Sorties auxquelles je suis inscrit/e</label><br>
+                        <input type="checkbox" class="form-check-input" id="sortiesCommeInscrit" name="sortiesCommeInscrit" value="checked"
+                                {% if sortiesCommeInscrit != null %} checked {% endif %}>
+                        <label for="sortiesCommeInscrit" class="form-check-label">Sorties auxquelles je suis inscrit/e</label><br>
 
-                        <input type="checkbox" class="form-check-input" id="sortiesNonInscrit" name="sortiesNonInscrit" value="checked">
+                        <input type="checkbox" class="form-check-input" id="sortiesNonInscrit" name="sortiesNonInscrit" value="checked"
+                                {% if sortiesNonInscrit != null %} checked {% endif %}>
                         <label for="sortiesNonInscrit" class="form-check-label">Sorties auxquelles je ne suis pas inscrit/e</label><br>
 
                         <input type="checkbox" class="form-check-input" id="sortiesPassees" name="etatSortiesPassees" value="4"
                                 {% if etatSortiesPassees != null %} checked {% endif %}>
                         <label for="sortiesPassees" class="form-check-label">Sorties passées</label><br><br>
 
-                        <button class="btn btn-primary" type="submit">Rechercher</button>
+                        <button class="btn btn-primary" type="submit">Rechercher/Actualiser</button>
                     </div>
                 </fieldset>
 
