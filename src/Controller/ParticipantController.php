@@ -75,9 +75,15 @@ class ParticipantController extends AbstractController
             $hashed = $encoder->encodePassword($participant, $participant->getPassword());
             $participant->setMotDePasse($hashed);
 
+
             // Ajout photo de profil
             $imageFile = $participantForm->get('image')->getData();
+
             if ($imageFile) {
+                if(!empty($participant->getImageFilename()) ) {
+                    unlink($this->getParameter('participants_directory').'/'.$participant->getImageFilename());
+                    $participant->setImageFilename('');
+                }
                 $imageFileName = $fileUploader->upload($imageFile);
                 $participant->setImageFilename($imageFileName);
             }
