@@ -134,4 +134,5 @@ class LieuController extends AbstractController
             return new Response('Erreur Ajax !', 400);
         }
     }
+
 }
