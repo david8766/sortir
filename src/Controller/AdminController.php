@@ -121,7 +121,6 @@ class AdminController extends AbstractController
                 $campus = $campusRepo->find($user['campus']);
                 $participant->setCampus($campus);
                 $participant->setRoles(['ROLE_PARTICIPANT']);
-                dump($participant);
 
                 $em->persist($participant);
             }
@@ -143,6 +142,36 @@ class AdminController extends AbstractController
         $em->remove($participant);
         $em->flush();
         $this->addFlash('success','Le participant a bien été supprimé.');
+        return $this->redirectToRoute('admin.users.list');
+    }
+
+    /**
+     * @Route("/admin/desactiverParticipant/{id}", name="deactivate.user")
+     * @param Participant $participant
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
+    public function desactiverUnUtilisateur(Participant $participant, EntityManagerInterface $em): Response
+    {
+        $participant->setRoles(['']);
+        $participant->setActif(false);
+        $em->flush();
+        $this->addFlash('success','Le participant a bien été désactivé.');
+        return $this->redirectToRoute('admin.users.list');
+    }
+
+    /**
+     * @Route("/admin/activerParticipant/{id}", name="activate.user")
+     * @param Participant $participant
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
+    public function activerUnUtilisateur(Participant $participant, EntityManagerInterface $em): Response
+    {
+        $participant->setRoles(['ROLE_PARTICIPANT']);
+        $participant->setActif(true);
+        $em->flush();
+        $this->addFlash('success','Le participant a bien été activé.');
         return $this->redirectToRoute('admin.users.list');
     }
 

@@ -27,6 +27,7 @@
                 </thead>
                 <tbody>
                 {% for user in users %}
+                    {% if user.pseudo is not same as 'admin' %}
                     <tr>
                         <th scope="row">{{ user.id }}</th>
                         <td>{{ user.pseudo }}</td>
@@ -34,10 +35,16 @@
                         <td>{{ user.mail }}</td>
                         <td>{{ user.campus.nom }}</td>
                         <td>
-                            <a href="">Désactivation</a>
-                            <a href="{{ path ('delete.user', {'id':  user.id}) }}">Suppression</a>
+                            {% if user.actif == false %}
+                                <a href="{{ path ('activate.user', {'id':  user.id}) }}" class="text-success">Activation</a>
+                            {% endif %}
+                            {% if user.actif == true %}
+                                <a href="{{ path ('deactivate.user', {'id':  user.id}) }}" class="text-warning">Désactivation</a>
+                            {% endif %}
+                            <a href="{{ path ('delete.user', {'id':  user.id}) }}"  class="text-danger">Suppression</a>
                         </td>
                     </tr>
+                    {% endif %}
                 {% endfor %}
                 </tbody>
             </table>
