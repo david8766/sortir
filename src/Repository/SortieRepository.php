@@ -112,7 +112,7 @@ class SortieRepository extends ServiceEntityRepository
             ->execute();
 
         // sorties archivées apres 30 jours
-        $di = new DateInterval('P3D');
+        $di = new DateInterval('P30');
         $di->invert=1;
         $dateArchive = new DateTime('midnight');
         $dateArchive->add($di);

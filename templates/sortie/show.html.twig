@@ -76,12 +76,13 @@
                     <tbody>
                     {% for inscription in sortie.inscriptions %}
                         <tr>
-                            <th>{{ inscription.participant.nom }} {{ inscription.participant.prenom }}</th>
+                            <td>{{ inscription.participant.pseudo }} </td>
+                            <td>{{ inscription.participant.nom }} {{ inscription.participant.prenom }}</td>
                             <td><a href="{{ path('afficherProfil', {'id':  inscription.participant.id}) }}">Voir le profil</a></td>
                         </tr>
                     {% else %}
                         <tr>
-                            <td colspan="2">Aucun participant.</td>
+                            <td colspan="3">Aucun participant.</td>
                         </tr>
                     {% endfor %}
                     </tbody>

@@ -6,6 +6,7 @@ use App\Entity\Lieu;
 use App\Form\LieuType;
 use App\Repository\LieuRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -102,5 +103,35 @@ class LieuController extends AbstractController
         }
 
         return $this->redirectToRoute('lieu_index');
+    }
+
+    /**
+     * @Route("/ajax/adresse", name="ajax_adresse")
+     */
+    public function ajaxGetAdresse(Request $request)
+    {
+        /*
+        $lieux = $this->getDoctrine()
+            ->getRepository(Lieu::class)
+            ->findAll();
+        */
+        //if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1) {
+        if ($request->isXmlHttpRequest()){
+            return new JsonResponse(array('data' => 'this is a json response'));
+            /*
+            $jsonData = array();
+            $idx = 0;
+            foreach ($lieux as $lieu) {
+                $temp = array(
+                    'nom' => $lieu->getNomLieu(),
+                    'rue' => $lieu->getRue(),
+                );
+                $jsonData[$idx++] = $temp;
+            }
+            return new JsonResponse($jsonData);
+            */
+        } else {
+            return new Response('Erreur Ajax !', 400);
+        }
     }
 }
