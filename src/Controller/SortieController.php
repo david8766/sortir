@@ -110,7 +110,11 @@ class SortieController extends AbstractController
      */
     public function delete(Request $request, Sortie $sortie): Response
     {
-        // vérifier l'organisateur
+
+        if($this->getUser() !== $sortie->getOrganisateur() ){
+            $this->addFlash('error',"Vous n'êtes pas autorisé à supprimer cette sortie.");
+            return $this->show($sortie);
+        }
 
         $this->ActualiserEtats();
 
@@ -140,7 +144,10 @@ class SortieController extends AbstractController
      */
     public function publier(Request $request, Sortie $sortie): Response
     {
-        // vérifier l'organisateur
+        if($this->getUser() !== $sortie->getOrganisateur() ){
+            $this->addFlash('error',"Vous n'êtes pas autorisé à publier cette sortie.");
+            return $this->show($sortie);
+        }
 
         if($sortie->getEtat()->getId() != 0) {
             $this->addFlash('error','Vous ne pouvez pas publier cette sortie.');
@@ -168,7 +175,10 @@ class SortieController extends AbstractController
      */
     public function annuler(Request $request, Sortie $sortie): Response
     {
-        // vérifier l'organisateur
+        if($this->getUser() !== $sortie->getOrganisateur() ){
+            $this->addFlash('error',"Vous n'êtes pas autorisé à annuler cette sortie.");
+            return $this->show($sortie);
+        }
 
         if($sortie->getEtat()->getId() != 1) {
             $this->addFlash('error','Vous ne pouvez pas annuler cette sortie.');
@@ -194,7 +204,10 @@ class SortieController extends AbstractController
      */
     public function annulerConfirmer(Request $request, Sortie $sortie): Response
     {
-        // vérifier l'organisateur
+        if($this->getUser() !== $sortie->getOrganisateur() ){
+            $this->addFlash('error',"Vous n'êtes pas autorisé à annuler cette sortie.");
+            return $this->show($sortie);
+        }
 
         if($sortie->getEtat()->getId() != 1) {
             $this->addFlash('error','Vous ne pouvez pas annuler cette sortie.');

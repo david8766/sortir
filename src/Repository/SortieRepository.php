@@ -7,7 +7,6 @@ use DateInterval;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use function Doctrine\ORM\QueryBuilder;
 
 /**
  * @method Sortie|null find($id, $lockMode = null, $lockVersion = null)
@@ -112,7 +111,7 @@ class SortieRepository extends ServiceEntityRepository
             ->execute();
 
         // sorties archivées apres 30 jours
-        $di = new DateInterval('P30');
+        $di = new DateInterval('P30D');
         $di->invert=1;
         $dateArchive = new DateTime('midnight');
         $dateArchive->add($di);
