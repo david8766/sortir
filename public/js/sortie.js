@@ -1,5 +1,6 @@
 function abonnement() {
-    $("#sortie_ville").click(function () {
-        alert("yo !");
+    alert("salut !");
+    $("#sortie_ville").change(function() {
+        //alert("yo !");
     });
 }
