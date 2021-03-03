@@ -3,6 +3,7 @@
 {% block title %}Sortir.com | Accueil{% endblock %}
 
 {% block main %}
+<main class="container">
 
     <div class="infos">
         <p>Date du jour : {{ "now" | date("d/m/Y") }}</p>
@@ -13,6 +14,7 @@
 
 
     {% include 'home/inc/tableSorties.html.twig' %}
+</main>
 
 
 <form action="{{ path('sortie_new') }}" id="creationSortie">
