@@ -7,6 +7,7 @@ namespace App\TwigFunctions;
 
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
+use Doctrine\Common\Collections\ArrayCollection;
 
 
 class ParticipantExtension extends AbstractExtension
@@ -17,7 +18,6 @@ class ParticipantExtension extends AbstractExtension
             new TwigFunction('initiales', [$this, 'getInitiales',]),
             new TwigFunction('isInscrit', [$this, 'isInscrit']),
             new TwigFunction('action', [$this, 'action']),
-            new TwigFunction('countNbParticipants', [$this, 'countNbParticipants'] )
         ];
     }
 
@@ -31,10 +31,6 @@ class ParticipantExtension extends AbstractExtension
         return strtoupper($nom_initiale);
     }
 
-    public function countNbParticipants($sortie): int
-    {
-    return $nbParticipants = count($sortie->getInscriptions());
-    }
 
     public function isInscrit($sortie, $user): string
     {
@@ -60,8 +56,9 @@ class ParticipantExtension extends AbstractExtension
             $action = 1;
             foreach ($listeInscriptions as $i) {
                 $sortieInscrite = $i->getSortie();
+                $sortieParticipant = $i->getParticipant();
                 $sortieOrganisateur = $sortieInscrite->getOrganisateur();
-                if ($sortie == $sortieInscrite) {
+                if ($sortie == $sortieInscrite && $sortieParticipant == $user) {
                     $action = 2;
                 }
                 if ($sortieOrganisateur == $user) {

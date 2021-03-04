@@ -27,7 +27,10 @@ class SortieRepository extends ServiceEntityRepository
         $dateDebut,
         $dateFin,
         $organisateur,
-        $etatSortiesPassees)
+        $etatSortiesPassees,
+        $sortiesCommeInscrit,
+        $sortiesNonInscrit
+        )
     {
 
         $qb = $this->createQueryBuilder('s');
@@ -60,52 +63,32 @@ class SortieRepository extends ServiceEntityRepository
             $qb ->andWhere('s.etat = :etatSortiesPassees')
                 ->setParameter('etatSortiesPassees',$etatSortiesPassees);
         }
+        if($sortiesCommeInscrit != null){
+            $qb ->join('s.inscriptions', 'insc')
+                ->addSelect('insc')
+                ->andWhere('insc.participant = :user')
+                ->setParameter('user', $sortiesCommeInscrit);
+        }
+
+        if($sortiesNonInscrit != null){
+            // Sous-requete : sorties auxquelles je suis inscrit
+
+            $sub2 = $this->createQueryBuilder('inscrit');
+            $sub2->select('i')
+                ->from("App:Inscriptions", "i")
+                ->andWhere('i.participant = :user')
+                ->andWhere('i.sortie = s');
+
+            // Requette principale : sorties en-cours sauf celles auxquelles je suis inscrit
+            $qb ->andwhere('s.etat = 1')
+                ->andWhere($qb->expr()->not($qb->expr()->exists($sub2->getDQL())))
+                ->setParameter('user', $sortiesNonInscrit);
+        }
             $qb->addOrderBy('s.dateHeureDebut', 'DESC');
         $query = $qb->getQuery();
         return $query->getResult();
     }
 
-    public function findByMesInscriptionsEnCours($user){
-        $qb = $this->createQueryBuilder('s');
-        $qb ->join('s.inscriptions', 'i')
-            ->addSelect('i')
-            ->andWhere('i.participant = :user')
-            ->setParameter('user', $user);
-        $qb->addOrderBy('s.dateHeureDebut', 'DESC');
-        $query = $qb->getQuery();
-        return $query->getResult();
-    }
-
-    public function findByMesInscriptionsPossiblesAlternate($user){
-        $qb = $this->createQueryBuilder('s');
-
-        $ssReq = $qb ->select('i.sortie')
-                     ->from('App\Entity\Inscriptions', 'i')
-                     ->where('i.participant = :user')
-                     ->setParameter('user', $user);
-
-        $MainReq = $qb  ->andWhere('s.etat = 1')
-                        ->andWhere($qb->expr()->notIn('s.inscriptions', $ssReq->getDQL()))
-                        ->addOrderBy('s.dateHeureDebut', 'DESC');
-
-        $query = $MainReq->getQuery();
-        return $query->getResult();
-    }
-
-    public function findByMesInscriptionsPossibles($user){
-        $em = $this->getEntityManager();
-        $dql = "SELECT s FROM App\Entity\Sortie s                
-                WHERE s.etat = 1 
-                AND s NOT IN (SELECT i.sortie FROM App\Entity\Inscriptions i
-                WHERE i.participant = :user)
-                ORDER BY s.dateHeureDebut DESC";
-            $em->createQuery($dql)
-                ->setParameter('user', $user)
-                ->execute();
-
-    }
-//$qb ->andWhere('s.etat = 1')
-//->andWhere($qb->expr()->notIn());
 
     public function updateEtats(){
 

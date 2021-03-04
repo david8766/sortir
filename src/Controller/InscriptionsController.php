@@ -28,18 +28,18 @@ class InscriptionsController extends AbstractController
         $sortie = $this->getDoctrine()->getRepository(Sortie::class)->find($noSortie);
         $listeInscriptions = new ArrayCollection();
         $listeInscriptions = $sortie->getInscriptions();
-        $inscription->setDateInscription(new DateTime());
-        $inscription->setParticipant($this->getUser());
-        $inscription->setSortie($sortie);
         $nbParticipants = count($sortie->getInscriptions());
         if($nbParticipants < $sortie->getNbInscriptionsMax()){
             foreach ($listeInscriptions as $i){
                 $participant = $i->getParticipant();
-                if($participant = $this->getUser()){
-                    $this->addFlash('error', 'Vous êtes déjà inscrits pour cette sortie');
+                if($participant == $this->getUser()){
+                    $this->addFlash('error', 'Vous êtes déjà inscrit pour cette sortie');
                     return $this->redirectToRoute('accueil');
                 }
             }
+            $inscription->setDateInscription(new DateTime());
+            $inscription->setParticipant($this->getUser());
+            $inscription->setSortie($sortie);
             $em = $this->getDoctrine()->getManager();
             try {
                 $em->persist($inscription);
@@ -84,6 +84,5 @@ class InscriptionsController extends AbstractController
         }
         return $this->redirectToRoute('accueil');
     }
-
 
 }

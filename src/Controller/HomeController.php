@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Campus;
+use App\Entity\Participant;
 use App\Entity\Inscriptions;
 use App\Entity\Sortie;
 use phpDocumentor\Reflection\Types\This;
@@ -90,34 +91,10 @@ class HomeController extends AbstractController
                 $dateDebut,
                 $dateFin,
                 $organisateur,
-                $etatSortiesPassees);
+                $etatSortiesPassees,
+                $sortiesCommeInscrit,
+                $sortiesNonInscrit);
 
-            //Effectuer le tri des sorties par inscriptions si les paramètres sortiesCommeInscrit ou sortieNonInscrit sont renseignés.
-            if($sortiesCommeInscrit == "checked" || $sortiesNonInscrit == "checked") {
-                $mesSortiesInscritesEnCours = new ArrayCollection();
-                if($sortiesCommeInscrit == "checked") {
-                    $mesSortiesCommeInscrit = $sortiesRepo->findByMesInscriptionsEnCours($this->getUser());
-                    foreach ($mesSortiesCommeInscrit as $ms){
-                        foreach ($sorties as $s){
-                            if($s == $ms){
-                                $mesSortiesInscritesEnCours->add($ms);
-                            }
-                        }
-                    }
-                }
-                /*if($sortiesNonInscrit == "checked") {
-                    $mesSortiesonInscrit = $sortiesRepo->findByMesInscriptionsPossibles($this->getUser());
-                    foreach ($mesSortiesNonInscrit as $ms){
-                        foreach ($sorties as $s){
-                            if($s == $ms){
-                                $mesSortiesInscritesEnCours->add($ms);
-                            }
-                        }
-                    }
-                }*/
-
-                $sorties = $mesSortiesInscritesEnCours;
-            }
             if ($sorties == null){
                 $this->addFlash('noResults', 'Aucune sortie ne correspond à vos critères');
             }
