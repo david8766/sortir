@@ -86,7 +86,6 @@ class SortieController extends AbstractController
                 return $this->show($sortie);
         }
          else{
-             $this->denyAccessUnlessGranted("ROLE_ORGANISATEUR");
 
              $form = $this->createForm(SortieType::class, $sortie);
              $form->handleRequest($request);
