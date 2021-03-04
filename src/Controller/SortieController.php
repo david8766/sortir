@@ -88,7 +88,7 @@ class SortieController extends AbstractController
         $roles=$this->getUser()->getRoles();
 
         if($this->getUser() !== $sortie->getOrganisateur()
-            || in_array('ROLE_ADMIN',$roles)
+            || !in_array('ROLE_ADMIN',$roles)
             || $sortie->getEtat()->getId()>2) {
                 return $this->show($sortie);
         }
