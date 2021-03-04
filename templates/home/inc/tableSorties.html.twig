@@ -35,9 +35,9 @@
                         {% if action(sortie, app.user) == 2 %}
                         <a href="{{ path('seDesister',{'noSortie': sortie.noSortie}) }}"> - Se désister</a>
                         {% endif %}
-                        {% if action(sortie, app.user) == 3 %}
+{#  {% if action(sortie, app.user) == 3 %}
                         <a href="{{ path('sortie_edit', {'noSortie': sortie.noSortie}) }}"> - Modifier la sortie</a>
-                        {% endif %}
+                        {% endif %} #}
                     </td>
                 </tr>
                {% endfor %}
