@@ -58,7 +58,7 @@ class SortieController extends AbstractController
 
             $this->addFlash('success','La sortie a été enregistrée.');
 
-            return $this->redirectToRoute('sortie_index');
+            return $this->redirectToRoute('accueil');
         }
 
         return $this->render('sortie/new.html.twig', [
@@ -95,7 +95,7 @@ class SortieController extends AbstractController
                  $this->getDoctrine()->getManager()->flush();
 
                  $this->addFlash('success','La sortie a été enregistrée.');
-                 return $this->redirectToRoute('sortie_index');
+                 return $this->redirectToRoute('accueil');
              }
 
              return $this->render('sortie/edit.html.twig', [
@@ -130,7 +130,7 @@ class SortieController extends AbstractController
             $this->addFlash('success','La sortie a été supprimée.');
         }
 
-        return $this->redirectToRoute('sortie_index');
+        return $this->redirectToRoute('accueil');
     }
 
     private function ActualiserEtats(){
@@ -162,11 +162,12 @@ class SortieController extends AbstractController
             $sortie->setEtat($etat);
 
             $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($sortie);
             $entityManager->flush();
             $this->addFlash('success','La sortie a été publiée.');
         }
 
-        return $this->redirectToRoute('sortie_index');
+        return $this->redirectToRoute('accueil');
 
     }
 
