@@ -58,12 +58,12 @@ class ParticipantExtension extends AbstractExtension
                 $sortieInscrite = $i->getSortie();
                 $sortieParticipant = $i->getParticipant();
                 $sortieOrganisateur = $sortieInscrite->getOrganisateur();
-                if ($sortie == $sortieInscrite && $sortieParticipant == $user) {
-                    $action = 2;
-                }
                 if ($sortieOrganisateur == $user) {
                     $action = 3;
+                }elseif ($sortie == $sortieInscrite && $sortieParticipant == $user) {
+                    $action = 2;
                 }
+
             }
         }else{
                 $action = 0;

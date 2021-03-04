@@ -84,7 +84,7 @@ class SortieRepository extends ServiceEntityRepository
                 ->andWhere($qb->expr()->not($qb->expr()->exists($sub2->getDQL())))
                 ->setParameter('user', $sortiesNonInscrit);
         }
-            $qb->addOrderBy('s.dateHeureDebut', 'DESC');
+        $qb->addOrderBy('s.dateHeureDebut', 'DESC');
         $query = $qb->getQuery();
         return $query->getResult();
     }
