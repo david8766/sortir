@@ -29,3 +29,11 @@
     </div>
 </main>
 {% endblock %}
+{% block javascripts %}
+    <script>
+        $('#participant_image').on('change',function(){
+            var filename = $(this).val();
+            $(this).next('label').html(filename);
+        })
+    </script>
+{% endblock %}

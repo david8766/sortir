@@ -17,4 +17,7 @@ framework:
         log: true
 
     translator:
-        enabled: false
+        enabled: true
+        fallbacks: ['%locale%']
+
+    default_locale: fr
