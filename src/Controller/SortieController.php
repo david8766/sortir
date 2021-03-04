@@ -86,6 +86,7 @@ class SortieController extends AbstractController
         $this->ActualiserEtats();
 
         $roles=$this->getUser()->getRoles();
+
         if($this->getUser() !== $sortie->getOrganisateur()
             || in_array('ROLE_ADMIN',$roles)
             || $sortie->getEtat()->getId()>2) {
