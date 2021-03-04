@@ -23,33 +23,45 @@ class InscriptionsController extends AbstractController
      */
     public function sInscrire(Request $request): Response
     {
+        //Récupération des variables
         $inscription = new Inscriptions();
         $noSortie = $request->get('noSortie', null);
         $sortie = $this->getDoctrine()->getRepository(Sortie::class)->find($noSortie);
+        $etatSortie = $sortie->getEtat();
         $listeInscriptions = new ArrayCollection();
         $listeInscriptions = $sortie->getInscriptions();
         $nbParticipants = count($sortie->getInscriptions());
-        if($nbParticipants < $sortie->getNbInscriptionsMax()){
-            foreach ($listeInscriptions as $i){
-                $participant = $i->getParticipant();
-                if($participant == $this->getUser()){
-                    $this->addFlash('error', 'Vous êtes déjà inscrit pour cette sortie');
-                    return $this->redirectToRoute('accueil');
-                }
+
+                //Validation des contraintes pour procéder à l'inscription
+        //Etat de la sortie
+        if($sortie->getEtat()->getId() != 1){
+            $this->addFlash('error', 'La sortie n\'est pas (ou plus) ouverte à l\'inscription');
+            return $this->redirectToRoute('accueil');
+        }
+        //Nombre de places disponibles
+        if($nbParticipants >= $sortie->getNbInscriptionsMax()) {
+            $this->addFlash('error', 'Inscription impossible : la sortie est complète');
+            return $this->redirectToRoute('accueil');
+        }
+        //Est-on déjà inscrit à cette sortie ?
+        foreach ($listeInscriptions as $i){
+            $participant = $i->getParticipant();
+            if($participant == $this->getUser()){
+                $this->addFlash('error', 'Vous êtes déjà inscrit pour cette sortie');
+                return $this->redirectToRoute('accueil');
             }
-            $inscription->setDateInscription(new DateTime());
-            $inscription->setParticipant($this->getUser());
-            $inscription->setSortie($sortie);
-            $em = $this->getDoctrine()->getManager();
-            try {
-                $em->persist($inscription);
-                $em->flush();
-                $this->addFlash('success','Votre inscription a bien été prise en compte');
-            }catch(Exception $e){
-                $this->addFlash('error','Votre inscription a échoué');
-            }
-        }else{
-            $this->addFlash('error','Inscription impossible : la sortie est complète');
+        }
+                // Inscriptions si toutes les contraintes sont validées
+        $inscription->setDateInscription(new DateTime());
+        $inscription->setParticipant($this->getUser());
+        $inscription->setSortie($sortie);
+        $em = $this->getDoctrine()->getManager();
+        try {
+            $em->persist($inscription);
+            $em->flush();
+            $this->addFlash('success','Votre inscription a bien été prise en compte');
+        }catch(Exception $e){
+            $this->addFlash('error','Votre inscription a échoué');
         }
         return $this->redirectToRoute('accueil');
     }
