@@ -21,15 +21,19 @@
             </div>
             {{ form_row(form.description) }}
             {{ form_row(form.campus) }}
-            {{ form_row(form.ville) }}
+            {# {{ form_row(form.ville) }} #}
             {{ form_row(form.lieu) }}
-            {% if sortie.lieu and sortie.ville  %}
+            {% if sortie.lieu  %}
                 <div class="lieu">
+                    {{ sortie.lieu.NomLieu }}<br>
                     {{ sortie.lieu.rue }}<br>
-                    {{ sortie.ville.codepostal }} {{ sortie.ville.nom }}<br>
+                    {{ sortie.lieu.ville.codepostal }} {{ sortie.lieu.ville.nom }}<br>
                 </div>
                 <br>
             {% endif %}
+            <div class="boutons">
+                <a href="{{ path('lieu_new') }}" class="">Ajouter un lieu</a>
+            </div>
         </div>
 
     </div>
@@ -37,10 +41,10 @@
     <div class="row my-4 justify-content-center">
         <div class="col-12 col-sm-12 col-md-7">
             <div class="boutons">
-                <button class="btn btn-success">{{ button_label|default('Enregistrer') }}</button>
+                <button class="btn btn-primary" onclick="history.go(-1)">Retour</button>
             </div>
             <div class="boutons">
-                <a href="{{ path('accueil') }}" class="btn btn-primary">Retour à la liste</a>
+                <button class="btn btn-success">{{ button_label|default('Enregistrer') }}</button>
             </div>
         </div>
     </div>

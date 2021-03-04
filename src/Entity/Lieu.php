@@ -122,5 +122,8 @@ class Lieu
         $this->Ville = $Ville;
     }
 
-
+    public function getNomComplet(): ?string
+    {
+        return $this->nomLieu.', '.$this->getVille()->getNom();
+    }
 }

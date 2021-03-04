@@ -2,7 +2,7 @@
     {{ form_widget(form) }}
     <div>
         <div class="boutons">
-            <a href="{{ path('lieu_index') }}" class="btn btn-primary">Retour à la liste</a>
+            <button class="btn btn-primary" onclick="history.go(-1)">Retour</button>
         </div>
         <div class="boutons">
             <a href="{{ path('ville_new') }}" class="btn btn-primary">Ajouter une ville</a>
