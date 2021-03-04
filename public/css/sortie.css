@@ -1,4 +1,4 @@
-
+input{margin-left: 0px !important}
 .boutons{
     display: inline-block;
     margin-right: 10px;
@@ -24,3 +24,4 @@
     border: 1px solid white;
     padding: 15px;
 }
+
