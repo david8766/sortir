@@ -1,42 +1,53 @@
 {{ form_start(form) }}
-<div class="colSortie1">
-    <div class="etat">
-        &gt; {{ sortie.etat.libelle }}
-    </div>
-    {{ form_row(form.nom) }}
-    {{ form_row(form.dateHeureDebut) }}
-    {{ form_row(form.duree) }}
-    {{ form_row(form.dateCloture) }}
-    {{ form_row(form.nbInscriptionsMax) }}
-</div>
-<div class="colSortie2">
-    <div class="etat">
-        Organisée par {{ sortie.organisateur.nomPrenom }}
-    </div>
-    {{ form_row(form.description) }}
-    {{ form_row(form.campus) }}
-    {{ form_row(form.ville) }}
-    {{ form_row(form.lieu) }}
-    {% if sortie.lieu and sortie.ville  %}
-        <div class="lieu">
-            {{ sortie.lieu.rue }}<br>
-            {{ sortie.ville.codepostal }} {{ sortie.ville.nom }}<br>
+
+<div class="container-fluid ">
+
+    <div class="row my-1 justify-content-center">
+
+        <div class="col-12 col-sm-12 col-md-3">
+            <div class="etat">
+                &gt; {{ sortie.etat.libelle }}
+            </div>
+            {{ form_row(form.nom) }}
+            {{ form_row(form.dateHeureDebut) }}
+            {{ form_row(form.duree) }}
+            {{ form_row(form.dateCloture) }}
+            {{ form_row(form.nbInscriptionsMax) }}
         </div>
-        <br>
-    {% endif %}
+
+        <div class="col-12 col-sm-12 col-md-4">
+            <div class="etat">
+                Organisée par {{ sortie.organisateur.nomPrenom }}
+            </div>
+            {{ form_row(form.description) }}
+            {{ form_row(form.campus) }}
+            {{ form_row(form.ville) }}
+            {{ form_row(form.lieu) }}
+            {% if sortie.lieu and sortie.ville  %}
+                <div class="lieu">
+                    {{ sortie.lieu.rue }}<br>
+                    {{ sortie.ville.codepostal }} {{ sortie.ville.nom }}<br>
+                </div>
+                <br>
+            {% endif %}
+        </div>
+
+    </div>
+
+    <div class="row my-4 justify-content-center">
+        <div class="col-12 col-sm-12 col-md-7">
+            <div class="boutons">
+                <button class="btn btn-success">{{ button_label|default('Enregistrer') }}</button>
+            </div>
+            <div class="boutons">
+                <a href="{{ path('accueil') }}" class="btn btn-primary">Retour à la liste</a>
+            </div>
+        </div>
+    </div>
+
 </div>
 
-<div>
-    <div class="boutons">
-        <button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
-    </div>
-    <div class="boutons">
-        <a href="{{ path('accueil') }}" class="btn btn-primary">Retour à la liste</a>
-    </div>
-</div>
 {{ form_end(form) }}
-
-
 
 
 

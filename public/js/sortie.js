@@ -1,22 +1,29 @@
 function abonnement() {
 
     $("#sortie_lieu").change(function(event){
+
+        var bidon ="123"
+        var json_data = JSON.stringify(bidon);
+
         $.ajax({
             url:        '/lieu/ajax/adresse',
             type:       'POST',
             dataType:   'json',
+            data: { json_data },
 
             success: function(data, status) {
-                alert(" l'adresse est trouvée");
-                /*
                 for(i = 0; i < data.length; i++) {
+                    /*
                     lieu = data[i];
 
                     var adresse = $("<div></div>");
                     adresse.text(lieu['nomLieu']);
-                    $('#test').append(adresse);
+                    */
+                    var adresse = "hhhhhhhhhhhhhhhhhhh";
+                    $('#lieu').append(adresse);
                 }
-                */
+
+
             },
             error : function(xhr, textStatus, errorThrown) {
                 alert("Impossible de trouver l'adresse.");

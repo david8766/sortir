@@ -10,21 +10,24 @@
 
     <h1>Modifier la sortie</h1>
 
-    <div class="colSortie">
-        {{ include('sortie/_form.html.twig', {'button_label': 'Enregistrer'}) }}
-        {% if sortie.etat.id==1 %}
-            <div class="boutons">
-                {{ include('sortie/_annuler_form.html.twig') }}
-            </div>
-        {% endif %}
-        {% if sortie.etat.id==0 %}
-            <div class="boutons">
-                {{ include('sortie/_publier_form.html.twig') }}
-            </div>
-            <div class="boutons">
-                {{ include('sortie/_delete_form.html.twig') }}
-            </div>
-        {% endif %}
+    {{ include('sortie/_form.html.twig', {'button_label': 'Enregistrer'}) }}
+
+    <div class="row my-4 justify-content-center mx-1">
+        <div class="col col-sm-12 col-md-7">
+            {% if sortie.etat.id==1 %}
+                <div class="boutons">
+                    {{ include('sortie/_annuler_form.html.twig') }}
+                </div>
+            {% endif %}
+            {% if sortie.etat.id==0 %}
+                <div class="boutons">
+                    {{ include('sortie/_publier_form.html.twig') }}
+                </div>
+                <div class="boutons">
+                    {{ include('sortie/_delete_form.html.twig') }}
+                </div>
+            {% endif %}
+        </div>
     </div>
 
 {% endblock %}
