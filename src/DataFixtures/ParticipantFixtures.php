@@ -74,8 +74,8 @@ class ParticipantFixtures extends Fixture
             $participant = new Participant();
             $participant->setCampus($campus[mt_rand(0,3)]);
             $participant->setPseudo('pseudo' . $i);
-            $participant->setNom($faker->firstName());
-            $participant->setPrenom($faker->lastName);
+            $participant->setPrenom($faker->firstName());
+            $participant->setNom($faker->lastName);
             $participant->setTelephone($faker->phoneNumber);
             $participant->setMail($faker->email);
             $participant->setMotDePasse(($this->passwordEncoder->encodePassword($admin, 'password')));
