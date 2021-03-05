@@ -40,7 +40,7 @@ class HomeController extends AbstractController
         $campusActif = $this->session->get('campusActif', null);
         $dateDebut = $this->session->get('dateDebut', null);
         $dateFin = $this->session->get('dateFin', null);
-        $recherche = $this->session->get('recherche',null);
+        $recherche = $this->session->get('rechercheParNom',null);
 
         $organisateur = $this->session->get('organisateur', null);
         $sortiesCommeInscrit = $this->session->get('sortiesCommeInscrit', null);
@@ -107,7 +107,7 @@ class HomeController extends AbstractController
             "campusActif"=>$campusActif,
             "dateDebut"=>$dateDebut,
             "dateFin"=>$dateFin,
-            "recherche"=>$recherche,
+            "rechercheParNom"=>$recherche,
             "organisateur"=>$organisateur,
             "etatSortiesPassees"=>$etatSortiesPassees,
             "sortiesCommeInscrit"=>$sortiesCommeInscrit,

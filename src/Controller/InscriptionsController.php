@@ -33,17 +33,17 @@ class InscriptionsController extends AbstractController
         $nbParticipants = count($sortie->getInscriptions());
 
                 //Validation des contraintes pour procéder à l'inscription
-        //Etat de la sortie
+        // 1- Etat de la sortie
         if($sortie->getEtat()->getId() != 1){
             $this->addFlash('error', 'La sortie n\'est pas (ou plus) ouverte à l\'inscription');
             return $this->redirectToRoute('accueil');
         }
-        //Nombre de places disponibles
+        // 2- Nombre de places disponibles
         if($nbParticipants >= $sortie->getNbInscriptionsMax()) {
             $this->addFlash('error', 'Inscription impossible : la sortie est complète');
             return $this->redirectToRoute('accueil');
         }
-        //Est-on déjà inscrit à cette sortie ?
+        // 3- Est-on déjà inscrit à cette sortie ?
         foreach ($listeInscriptions as $i){
             $participant = $i->getParticipant();
             if($participant == $this->getUser()){
