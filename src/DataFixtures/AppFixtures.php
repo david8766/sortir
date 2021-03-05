@@ -15,7 +15,7 @@ use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class ParticipantFixtures extends Fixture
+class AppFixtures extends Fixture
 {
 
     public function __construct(UserPasswordEncoderInterface $passwordEncoder)
